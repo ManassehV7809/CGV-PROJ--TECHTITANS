@@ -24,7 +24,7 @@ ground.rotation.x = -Math.PI / 2;
 scene.add(ground);
 
 const groundMaterial = new THREE.MeshStandardMaterial({
-    map: new THREE.TextureLoader().load('./images/ground texture -vusani.avif')
+    map: new THREE.TextureLoader().load('./images/exp.avif')
 });
 ground.material = groundMaterial;
 
@@ -52,7 +52,7 @@ scene.add(cube);
 
 // Walls setup
 const wallMaterial = new THREE.MeshStandardMaterial({
-    map: new THREE.TextureLoader().load('./images/wall texture too - vusani.avif')
+    map: new THREE.TextureLoader().load('./images/wall texture - vusani.avif')
 });
 
 let walls = []; // Array to store all wall meshes
