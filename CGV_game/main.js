@@ -1,147 +1,155 @@
-import './style.css'
-import * as THREE from "three";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
-
-let keyboard = {};
-
-const scene = new THREE.Scene();
-
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-camera.position.set(0, 15, 2);
-const renderer = new THREE.WebGLRenderer({
-    canvas: document.querySelector('#game'),
-});
-
-renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight);
-camera.position.setZ(30);
+//todo: new things
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
+import {BasicCharacterController} from "./character/controls.js";
+import {ThirdPersonCamera} from "./camera/camera.js";
+import Level0 from "./levels/level0.js";
+import {lights} from "three/nodes";
 
 
-const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry(200, 200, 100, 100),
-    new THREE.MeshStandardMaterial({color: 0x00ff00})
-);
-ground.rotation.x = -Math.PI / 2;
-scene.add(ground);
+class Game {
+  constructor() {
+    this._Initialize();
+  }
 
-const pointLight = new THREE.PointLight(0xffffff, 5000);
-pointLight.position.set(10,50,10);
-const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-scene.add(pointLight, ambientLight);
+  _Initialize() {
 
-const lightHelper = new THREE.PointLightHelper(pointLight);
-const gridHelper = new THREE.GridHelper(200, 50);
-scene.add(lightHelper, gridHelper);
+    //todo: setting up a renderer
+    this._threejs = new THREE.WebGLRenderer({
+      canvas: document.querySelector('#game'),
+      antialias: true,
+    });
+    this._threejs.outputEncoding = THREE.sRGBEncoding;
+    this._threejs.shadowMap.enabled = true;
+    this._threejs.shadowMap.type = THREE.PCFSoftShadowMap;
+    this._threejs.setPixelRatio(window.devicePixelRatio);
+    this._threejs.setSize(window.innerWidth, window.innerHeight);
 
-//const controls = new OrbitControls(camera, renderer.domElement);
+    //todo: setting up a camera
+    this._camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight, 0.1, 1000);
+    this._camera.position.set(25, 10, 25);
 
-const spaceTexture = new THREE.TextureLoader().load('./images/space.jpg');
-scene.background = spaceTexture;
+    //todo: setting up a scene
+    this._scene = new THREE.Scene();
 
-const cube = new THREE.Mesh(
-    new THREE.BoxGeometry(3, 3, 3),
-    new THREE.MeshStandardMaterial({color: 0xff0000})
-);
-cube.position.set(0, 1.5, 0);
+    this._SetLevel(Level0);
 
-scene.add(cube);
+     // actually setting the stage --start
 
+    // //todo: setting up a lights
+    // // let light = new THREE.DirectionalLight(0xFFFFFF, 1.0);
+    // // light.position.set(-100, 100, 100);
+    // // light.target.position.set(0, 0, 0);
+    // // light.castShadow = true;
+    // // light.shadow.bias = -0.001;
+    // // light.shadow.mapSize.width = 4096;
+    // // light.shadow.mapSize.height = 4096;
+    // // light.shadow.camera.near = 0.1;
+    // // light.shadow.camera.far = 500.0;
+    // // light.shadow.camera.near = 0.5;
+    // // light.shadow.camera.far = 500.0;
+    // // light.shadow.camera.left = 50;
+    // // light.shadow.camera.right = -50;
+    // // light.shadow.camera.top = 50;
+    // // light.shadow.camera.bottom = -50;
+    // // this._scene.add(light);
+    // //
+    // // light = new THREE.AmbientLight(0xFFFFFF, 0.25);
+    // // this._scene.add(light);
+    //
+    //
+    //
+    // //todo: setting up a background
+    //
+    // this._scene.background = new THREE.TextureLoader().load('./images/space.jpg');
+    //
+    // //todo: setting up a ground
+    // const plane = new THREE.Mesh(
+    //     new THREE.PlaneGeometry(1000, 1000, 10, 10),
+    //     new THREE.MeshStandardMaterial({
+    //         color: 0x808080,
+    //       }));
+    // plane.castShadow = false;
+    // plane.receiveShadow = true;
+    // plane.rotation.x = -Math.PI / 2;
+    // this._scene.add(plane);
 
-function followPlayer() {
-    camera.position.x = cube.position.x;
-    camera.position.y = cube.position.y + 7;
-    camera.position.z = cube.position.z + 15;
+     // actually setting the stage --end
+
+    this._mixers = [];
+    this._previousRAF = null;
+
+    this._LoadAnimatedModel();
+    this._RAF();
+  }
+
+  _SetLevel(level) {
+
+    //todo: add all lights
+      for(let i = 0; i < level.lights.length; i++){
+          this._scene.add(level.lights[i]);
+      }
+
+      //todo: add background
+        this._scene.background = level.background;
+
+      //todo: add ground
+        this._scene.add(level.ground);
+
+        //todo: add all objects -
+        for(let i = 0; i < level.objects.length; i++){
+            this._scene.add(level.objects[i]);
+        }
+  }
+  _LoadAnimatedModel() {
+    const params = {
+      camera: this._camera,
+      scene: this._scene,
+    }
+    this._controls = new BasicCharacterController(params);
+
+    this._thirdPersonCamera = new ThirdPersonCamera({
+      camera: this._camera,
+      target: this._controls,
+    });
+  }
+
+  _OnWindowResize() {
+    this._camera.aspect = window.innerWidth / window.innerHeight;
+    this._camera.updateProjectionMatrix();
+    this._threejs.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  _RAF() {
+    requestAnimationFrame((t) => {
+      if (this._previousRAF === null) {
+        this._previousRAF = t;
+      }
+
+      this._RAF();
+
+      this._threejs.render(this._scene, this._camera);
+      this._Step(t - this._previousRAF);
+      this._previousRAF = t;
+    });
+  }
+
+  _Step(timeElapsed) {
+    const timeElapsedS = timeElapsed * 0.001;
+    if (this._mixers) {
+      this._mixers.map(m => m.update(timeElapsedS));
+    }
+
+    if (this._controls) {
+      this._controls.Update(timeElapsedS);
+    }
+
+    this._thirdPersonCamera.Update(timeElapsedS);
+  }
 }
 
-//todo: add controls
-// Set initial velocity for player movement
-const playerVelocity = new THREE.Vector3();
 
-// Define movement speed and acceleration
-const movementSpeed = 0.5;
-const acceleration = 0.1;
+let _APP = null;
 
-// Listen for keydown and keyup events to handle player movement
-document.addEventListener("keydown", (event) => {
-    keyboard[event.key] = true;
-    console.log(keyboard);
+window.addEventListener('DOMContentLoaded', () => {
+  _APP = new Game();
 });
-
-document.addEventListener("keyup", (event) => {
-    keyboard[event.key] = false;
-});
-
-// Define initial camera rotation angles
-let cameraYaw = 0;
-let cameraPitch = 0;
-
-// Define mouse sensitivity for camera control
-const mouseSensitivity = 0.002;
-
-// Listen for mouse movement to control the camera
-document.addEventListener("mousemove", (event) => {
-    cameraYaw -= event.movementX * mouseSensitivity;
-    cameraPitch -= event.movementY * mouseSensitivity;
-
-    // Limit camera pitch to avoid flipping
-    cameraPitch = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, cameraPitch));
-
-    // Apply camera rotation to the player cube
-    cube.rotation.set(0, cameraYaw, 0);
-
-    // Update camera position based on player cube's position
-    camera.position.x = cube.position.x - 15 * Math.sin(cameraYaw);
-    camera.position.y = cube.position.y + 7;
-    camera.position.z = cube.position.z - 15 * Math.cos(cameraYaw);
-
-    // Point the camera at the player cube's position
-    const cameraLookAt = new THREE.Vector3(
-        cube.position.x,
-        cube.position.y + 5,
-        cube.position.z-20
-    );
-    camera.lookAt(cameraLookAt);
-});
-
-function handlePlayerMovement() {
-
-    if (keyboard["w"]) {
-        // Move forward
-        playerVelocity.z -= acceleration;
-        console.log("W pressed");
-    }
-    if (keyboard["s"]) {
-        // Move backward
-        playerVelocity.z += acceleration;
-        console.log("S pressed");
-    }
-    if (keyboard["a"]) {
-        // Move left
-        playerVelocity.x -= acceleration;
-        console.log("A pressed");
-    }
-    if (keyboard["d"]) {
-        // Move right
-        playerVelocity.x += acceleration;
-        console.log("D pressed");
-    }
-
-        // Apply velocity to the player cube's position
-    cube.position.add(playerVelocity);
-
-    // Limit the player's maximum speed
-    playerVelocity.clampLength(0, movementSpeed);
-}
-
-
-function animate() {
-    requestAnimationFrame(animate);
-    handlePlayerMovement();
-    followPlayer();
-    renderer.render(scene, camera);
-}
-
-
-animate();
-
