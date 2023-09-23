@@ -5,6 +5,10 @@ import {ThirdPersonCamera} from "./camera/camera.js";
 import Level0 from "./levels/level0.js";
 import {lights} from "three/nodes";
 
+// // Get a reference to the audio element
+const audio = document.getElementById("myAudio");
+audio.volume = 0.4;
+
 
 class Game {
   constructor() {
@@ -27,53 +31,31 @@ class Game {
     //todo: setting up a camera
     this._camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight, 0.1, 1000);
     this._camera.position.set(25, 10, 25);
+    //adding audio listener
+    const listener = new THREE.AudioListener();
+    this._camera.add(listener);
+
+    const audioLoader = new THREE.AudioLoader();
+    const sound = new THREE.PositionalAudio(listener);
+
+    audioLoader.load('./music/Jim Yosef - Link [NCS Release].mp3', function (buffer) {
+        sound.setBuffer(buffer);
+        sound.setLoop(true); // Set to true for background music
+        sound.setVolume(0.5); // Adjust the volume (0 to 1)
+    });
+
+    // Play the audio when needed
+    sound.play();
+
+
+
 
     //todo: setting up a scene
     this._scene = new THREE.Scene();
 
+    //loading level
     this._SetLevel(Level0);
 
-     // actually setting the stage --start
-
-    // //todo: setting up a lights
-    // // let light = new THREE.DirectionalLight(0xFFFFFF, 1.0);
-    // // light.position.set(-100, 100, 100);
-    // // light.target.position.set(0, 0, 0);
-    // // light.castShadow = true;
-    // // light.shadow.bias = -0.001;
-    // // light.shadow.mapSize.width = 4096;
-    // // light.shadow.mapSize.height = 4096;
-    // // light.shadow.camera.near = 0.1;
-    // // light.shadow.camera.far = 500.0;
-    // // light.shadow.camera.near = 0.5;
-    // // light.shadow.camera.far = 500.0;
-    // // light.shadow.camera.left = 50;
-    // // light.shadow.camera.right = -50;
-    // // light.shadow.camera.top = 50;
-    // // light.shadow.camera.bottom = -50;
-    // // this._scene.add(light);
-    // //
-    // // light = new THREE.AmbientLight(0xFFFFFF, 0.25);
-    // // this._scene.add(light);
-    //
-    //
-    //
-    // //todo: setting up a background
-    //
-    // this._scene.background = new THREE.TextureLoader().load('./images/space.jpg');
-    //
-    // //todo: setting up a ground
-    // const plane = new THREE.Mesh(
-    //     new THREE.PlaneGeometry(1000, 1000, 10, 10),
-    //     new THREE.MeshStandardMaterial({
-    //         color: 0x808080,
-    //       }));
-    // plane.castShadow = false;
-    // plane.receiveShadow = true;
-    // plane.rotation.x = -Math.PI / 2;
-    // this._scene.add(plane);
-
-     // actually setting the stage --end
 
     this._mixers = [];
     this._previousRAF = null;
