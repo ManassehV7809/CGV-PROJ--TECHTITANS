@@ -3,14 +3,19 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.mod
 import {BasicCharacterController} from "./character/controls.js";
 import {ThirdPersonCamera} from "./camera/camera.js";
 import Level0 from "./levels/level0.js";
-import {lights} from "three/nodes";
+import Level1 from "./levels/level1.js";
+
 
 // // Get a reference to the audio element
 const audio = document.getElementById("myAudio");
 audio.volume = 0.4;
 
+const menu = document.getElementById("score");
+menu.style.display = "none";
+
 
 class Game {
+  isPaused = true;
   constructor() {
     this._Initialize();
   }
@@ -31,31 +36,12 @@ class Game {
     //todo: setting up a camera
     this._camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight, 0.1, 1000);
     this._camera.position.set(25, 10, 25);
-    //adding audio listener
-    const listener = new THREE.AudioListener();
-    this._camera.add(listener);
-
-    const audioLoader = new THREE.AudioLoader();
-    const sound = new THREE.PositionalAudio(listener);
-
-    audioLoader.load('./music/Jim Yosef - Link [NCS Release].mp3', function (buffer) {
-        sound.setBuffer(buffer);
-        sound.setLoop(true); // Set to true for background music
-        sound.setVolume(0.5); // Adjust the volume (0 to 1)
-    });
-
-    // Play the audio when needed
-    sound.play();
-
-
-
 
     //todo: setting up a scene
     this._scene = new THREE.Scene();
 
     //loading level
-    this._SetLevel(Level0);
-
+    this._SetLevel(Level1);
 
     this._mixers = [];
     this._previousRAF = null;
@@ -81,7 +67,9 @@ class Game {
         for(let i = 0; i < level.objects.length; i++){
             this._scene.add(level.objects[i]);
         }
+
   }
+
   _LoadAnimatedModel() {
     const params = {
       camera: this._camera,
