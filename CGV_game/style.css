@@ -7,8 +7,6 @@ canvas{
 .score{
     z-index: 2;
     position: absolute;
-    top: 0px;
-    left: 0px;
     font-size: 20px;
     font-weight: bold;
     color: white;
