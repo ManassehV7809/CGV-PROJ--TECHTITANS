@@ -52,14 +52,13 @@
     <canvas id="game"></canvas>
 
 <!--  start up menu  -->
-    /*<div class="score" id="score"><h1 class="heading">Start</h1>*/
-    /* <h1 class="heading">Levels</h1>*/
-         /*<h1 class="heading">credits</h1>*/
-     /*<h1 class="heading">Quit</h1>*/
+   
     <div class="menu" id="mainMenu">
         <h1 class="heading" onclick="openSubMenu('submenuLevels')">Start</h1>
         <h1 class="heading" onclick="openSubMenu('submenuLevels')">Levels</h1>
         <h1 class="heading" onclick="openSubMenu('submenuCredits')">Credits</h1>
+        <h1 class="heading" onclick="pauseGame()">Pause</h1> 
+        <h1 class="heading" onclick="resumeGame()">Resume</h1> 
         <h1 class="heading" onclick="quitGame()">Quit</h1>
     </div>
 
@@ -68,7 +67,7 @@
         <h2 class="heading" onclick="startGame()">Level 1</h2>
         <h2 class="heading" onclick="startGame()">Level 2</h2>
         <h2 class="heading" onclick="startGame()">Level 3</h2>
-        <!-- Add more levels as needed -->
+        <!-- Add more levels if needed -->
         <h2 class="heading" onclick="goBackToMainMenu()">Back</h2>
     </div>
 
@@ -76,7 +75,7 @@
     <div class="submenu" id="submenuCredits">
         <h2 class="heading">Game Design: Your Name</h2>
         <h2 class="heading">Artwork: Artist's Name</h2>
-        <!-- Add more credits as needed -->
+        <!-- Add more credits if needed -->
         <h2 class="heading" onclick="goBackToMainMenu()">Back</h2>
     </div>
 
@@ -108,13 +107,26 @@
 
         function startGame() {
             // Add your code to start the game here
-            // For example, you can redirect to the game page or initialize your game script.
             console.log('Starting the game...');
         }
+        function pauseGame() {
+        // Add your code to pause the game later
+            console.log('Pausing the game...');
+        //  hide the "Pause" button and show the "Resume" button.
+            document.querySelector('.heading:contains("Pause")').style.display = 'none';
+            document.querySelector('.heading:contains("Resume")').style.display = 'block';
+        }
 
+        function resumeGame() {
+        // Add your code to resume the game later
+            console.log('Resuming the game...');
+        // hide the "Resume" button and show the "Pause" button.
+            document.querySelector('.heading:contains("Pause")').style.display = 'block';
+            document.querySelector('.heading:contains("Resume")').style.display = 'none';
+        }
         function quitGame() {
             // Add your code to quit the game here
-            // For example, you can close the game window or return to the main menu.
+            // close the game window or return to the main menu.
             console.log('Quitting the game...');
         }
     </script>
