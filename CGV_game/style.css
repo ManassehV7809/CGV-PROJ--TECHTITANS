@@ -25,6 +25,59 @@ canvas{
 
 .heading:hover{
     cursor: pointer;
-    background: aliceblue;
+    transform: scale(1.2);
     transition: 1s;
 }
+
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0,0,0,0.5); /* Change this to your desired background color */
+            color: #fff; /* Change this to your desired text color */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .menu h1 {
+            font-size: 24px;
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease; /* Add a smooth hover effect */
+        }
+
+        .menu h1:hover {
+            transform: scale(1.1); /* Increase size on hover */
+        }
+
+        /* Styling for the submenu */
+        .submenu {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+           background-color: rgba(0,0,0,0.5); /* Change this to your desired background color */
+            color: #fff; /* Change this to your desired text color */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .submenu h2 {
+            font-size: 20px;
+            margin: 10px;
+            cursor: pointer;
+            transition: color 0.2s ease; /* Add a color change effect on hover */
+        }
+
+        .submenu h2:hover {
+            color: #ffcc00; /* Change the text color on hover */
+        }

@@ -10,8 +10,8 @@ import Level1 from "./levels/level1.js";
 const audio = document.getElementById("myAudio");
 audio.volume = 0.4;
 
-const menu = document.getElementById("score");
-menu.style.display = "none";
+// const menu = document.getElementById("score");
+// menu.style.display = "none";
 
 
 class Game {

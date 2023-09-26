@@ -1,64 +1,27 @@
 <!doctype html>
 <html lang="en">
+
+
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
           <link rel="stylesheet" href="./style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
-        <style>
-        /* Styling for the menu */
-        .menu {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #000; /* Change this to your desired background color */
-            color: #fff; /* Change this to your desired text color */
-        }
+      <script  src="./scripts/menu_scripts.js"></script>
 
-        .menu h1 {
-            font-size: 24px;
-            margin: 10px;
-            cursor: pointer;
-            transition: transform 0.2s ease; /* Add a smooth hover effect */
-        }
-
-        .menu h1:hover {
-            transform: scale(1.1); /* Increase size on hover */
-        }
-
-        /* Styling for the submenu */
-        .submenu {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .submenu h2 {
-            font-size: 20px;
-            margin: 10px;
-            cursor: pointer;
-            transition: color 0.2s ease; /* Add a color change effect on hover */
-        }
-
-        .submenu h2:hover {
-            color: #ffcc00; /* Change the text color on hover */
-        }
-    </style>
   </head>
   <body>
     <canvas id="game"></canvas>
 
+
 <!--  start up menu  -->
    
     <div class="menu" id="mainMenu">
-        <h1 class="heading" onclick="openSubMenu('submenuLevels')">Start</h1>
+        <h1 class="heading" onclick="startGame()">Start</h1>
         <h1 class="heading" onclick="openSubMenu('submenuLevels')">Levels</h1>
         <h1 class="heading" onclick="openSubMenu('submenuCredits')">Credits</h1>
-        <h1 class="heading" onclick="pauseGame()">Pause</h1> 
-        <h1 class="heading" onclick="resumeGame()">Resume</h1> 
+         <h1 class="heading" onclick="openSubMenu('submenuCredits')">Controls</h1>
         <h1 class="heading" onclick="quitGame()">Quit</h1>
     </div>
 
@@ -79,56 +42,14 @@
         <h2 class="heading" onclick="goBackToMainMenu()">Back</h2>
     </div>
 
+    <div>
            <audio id="myAudio" autoplay="autoplay" >
   <source src="./music/Jim Yosef - Link [NCS Release].mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
     </div>
+    <script type="module" src="./main.js"></script>
 
 
-
-
-    <script type="module" src="/main.js"></script>
-    <script>
-        // JavaScript functions to control the menu and submenus
-        function openSubMenu(submenuId) {
-            // Hide the main menu and show the specified submenu
-            document.getElementById('mainMenu').style.display = 'none';
-            document.getElementById(submenuId).style.display = 'flex';
-        }
-
-        function goBackToMainMenu() {
-            // Hide all submenus and show the main menu
-            document.querySelectorAll('.submenu').forEach(function (submenu) {
-                submenu.style.display = 'none';
-            });
-            document.getElementById('mainMenu').style.display = 'flex';
-        }
-
-        function startGame() {
-            // Add your code to start the game here
-            console.log('Starting the game...');
-        }
-        function pauseGame() {
-        // Add your code to pause the game later
-            console.log('Pausing the game...');
-        //  hide the "Pause" button and show the "Resume" button.
-            document.querySelector('.heading:contains("Pause")').style.display = 'none';
-            document.querySelector('.heading:contains("Resume")').style.display = 'block';
-        }
-
-        function resumeGame() {
-        // Add your code to resume the game later
-            console.log('Resuming the game...');
-        // hide the "Resume" button and show the "Pause" button.
-            document.querySelector('.heading:contains("Pause")').style.display = 'block';
-            document.querySelector('.heading:contains("Resume")').style.display = 'none';
-        }
-        function quitGame() {
-            // Add your code to quit the game here
-            // close the game window or return to the main menu.
-            console.log('Quitting the game...');
-        }
-    </script>
   </body>
 </html>
