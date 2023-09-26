@@ -6,15 +6,79 @@
           <link rel="stylesheet" href="./style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
+        <style>
+        /* Styling for the menu */
+        .menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #000; /* Change this to your desired background color */
+            color: #fff; /* Change this to your desired text color */
+        }
+
+        .menu h1 {
+            font-size: 24px;
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease; /* Add a smooth hover effect */
+        }
+
+        .menu h1:hover {
+            transform: scale(1.1); /* Increase size on hover */
+        }
+
+        /* Styling for the submenu */
+        .submenu {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .submenu h2 {
+            font-size: 20px;
+            margin: 10px;
+            cursor: pointer;
+            transition: color 0.2s ease; /* Add a color change effect on hover */
+        }
+
+        .submenu h2:hover {
+            color: #ffcc00; /* Change the text color on hover */
+        }
+    </style>
   </head>
   <body>
     <canvas id="game"></canvas>
 
 <!--  start up menu  -->
-    <div class="score" id="score"><h1 class="heading">Start</h1>
-     <h1 class="heading">Levels</h1>
-         <h1 class="heading">credits</h1>
-     <h1 class="heading">Quit</h1>
+    /*<div class="score" id="score"><h1 class="heading">Start</h1>*/
+    /* <h1 class="heading">Levels</h1>*/
+         /*<h1 class="heading">credits</h1>*/
+     /*<h1 class="heading">Quit</h1>*/
+    <div class="menu" id="mainMenu">
+        <h1 class="heading" onclick="openSubMenu('submenuLevels')">Start</h1>
+        <h1 class="heading" onclick="openSubMenu('submenuLevels')">Levels</h1>
+        <h1 class="heading" onclick="openSubMenu('submenuCredits')">Credits</h1>
+        <h1 class="heading" onclick="quitGame()">Quit</h1>
+    </div>
+
+    <!-- Submenu for Levels -->
+    <div class="submenu" id="submenuLevels">
+        <h2 class="heading" onclick="startGame()">Level 1</h2>
+        <h2 class="heading" onclick="startGame()">Level 2</h2>
+        <h2 class="heading" onclick="startGame()">Level 3</h2>
+        <!-- Add more levels as needed -->
+        <h2 class="heading" onclick="goBackToMainMenu()">Back</h2>
+    </div>
+
+    <!-- Submenu for Credits -->
+    <div class="submenu" id="submenuCredits">
+        <h2 class="heading">Game Design: Your Name</h2>
+        <h2 class="heading">Artwork: Artist's Name</h2>
+        <!-- Add more credits as needed -->
+        <h2 class="heading" onclick="goBackToMainMenu()">Back</h2>
+    </div>
 
            <audio id="myAudio" autoplay="autoplay" >
   <source src="./music/Jim Yosef - Link [NCS Release].mp3" type="audio/mpeg">
@@ -26,5 +90,33 @@
 
 
     <script type="module" src="/main.js"></script>
+    <script>
+        // JavaScript functions to control the menu and submenus
+        function openSubMenu(submenuId) {
+            // Hide the main menu and show the specified submenu
+            document.getElementById('mainMenu').style.display = 'none';
+            document.getElementById(submenuId).style.display = 'flex';
+        }
+
+        function goBackToMainMenu() {
+            // Hide all submenus and show the main menu
+            document.querySelectorAll('.submenu').forEach(function (submenu) {
+                submenu.style.display = 'none';
+            });
+            document.getElementById('mainMenu').style.display = 'flex';
+        }
+
+        function startGame() {
+            // Add your code to start the game here
+            // For example, you can redirect to the game page or initialize your game script.
+            console.log('Starting the game...');
+        }
+
+        function quitGame() {
+            // Add your code to quit the game here
+            // For example, you can close the game window or return to the main menu.
+            console.log('Quitting the game...');
+        }
+    </script>
   </body>
 </html>
