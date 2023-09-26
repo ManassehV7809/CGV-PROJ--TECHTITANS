@@ -4,13 +4,13 @@ import Ball from '../models/ball.js'
 
   //todo: define lights
 let lights = [];
-    let light = new THREE.DirectionalLight(0xFFFFFF, 1.0);
-    light.position.set(-100, 200, 100);
-    light.target.position.set(0, 0, 0);
+    let light = new THREE.PointLight(0xFFFFFF, 1.0);
+    light.position.set(-100, 100, 100);
+    //light.target.position.set(0, 0, 0);
     light.castShadow = true;
     light.shadow.bias = -0.001;
-    light.shadow.mapSize.width = 10000;
-    light.shadow.mapSize.height = 10000;
+    light.shadow.mapSize.width = 500;
+    light.shadow.mapSize.height = 500;
     light.shadow.camera.near = 0.1;
     light.shadow.camera.far = 500.0;
     light.shadow.camera.near = 0.5;

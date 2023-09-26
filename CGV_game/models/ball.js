@@ -2,7 +2,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.mod
 
     //define ball
     const Ball = new THREE.Mesh(
-        new THREE.SphereGeometry(5, 32, 32),
+        new THREE.SphereGeometry(5,16, 16),
         new THREE.MeshStandardMaterial({
             // color: 0xffff00,
             }));
