@@ -3,17 +3,17 @@ import Level from "./level_setting.js";
 
   //todo: define lights
 let lights = [];
-    let light = new THREE.DirectionalLight(0xFFFFFF, 1.0);
-    light.position.set(-100, 100, 100);
-    light.target.position.set(0, 0, 0);
+    let light = new THREE.PointLight(0xFFFFFF, 1.0);
+    light.position.set(0, 100, 0);
+    //light.target.position.set(0, 0, 0);
     light.castShadow = true;
     light.shadow.bias = -0.001;
-    light.shadow.mapSize.width = 4096;
-    light.shadow.mapSize.height = 4096;
+    light.shadow.mapSize.width = 3000;
+    light.shadow.mapSize.height = 3000;
     light.shadow.camera.near = 0.1;
     light.shadow.camera.far = 500.0;
     light.shadow.camera.near = 0.5;
-    light.shadow.camera.far = 500.0;
+    light.shadow.camera.far = 1000.0;
     light.shadow.camera.left = 50;
     light.shadow.camera.right = -50;
     light.shadow.camera.top = 50;
@@ -21,7 +21,7 @@ let lights = [];
 
     lights.push(light);
 
-    light = new THREE.AmbientLight(0x00FF00, 0.25);
+    light = new THREE.AmbientLight(0xffffff, 0.25);
     lights.push(light);
 
 // Define background
@@ -37,6 +37,7 @@ const plane = new THREE.Mesh(
 plane.castShadow = false;
 plane.receiveShadow = true;
 plane.rotation.x = -Math.PI / 2;
+
 
 
 // Maze constants and functions
@@ -127,10 +128,10 @@ function drawMaze() {
 
             if (cell.walls.top) {
                 const wall = new THREE.Mesh(
-                    new THREE.BoxGeometry(cellSize, 300, 10), // Adjust height as defined
+                    new THREE.BoxGeometry(cellSize, 10, 1), // Adjust height as defined
                     new THREE.MeshStandardMaterial({ map: wallTexture }) // Set the wall texture
                 );
-                wall.position.set(x, 150, z - cellSize / 2); // Adjust the y-position
+                wall.position.set(x, 5, z - cellSize / 2); // Adjust the y-position
                 wall.castShadow = true;
                 wall.receiveShadow = true;
                 mazeWalls.push(wall);
@@ -140,10 +141,10 @@ function drawMaze() {
 
             if (cell.walls.right) {
                 const wall = new THREE.Mesh(
-                    new THREE.BoxGeometry(10, 300, cellSize),
+                    new THREE.BoxGeometry(10, 10, cellSize),
                     new THREE.MeshStandardMaterial({ map: wallTexture })
                 );
-                wall.position.set(x + cellSize / 2, 150, z);
+                wall.position.set(x + cellSize / 2, 5, z);
                 wall.castShadow = true;
                 wall.receiveShadow = true;
                 mazeWalls.push(wall);
@@ -151,10 +152,10 @@ function drawMaze() {
 
             if (cell.walls.bottom) {
                 const wall = new THREE.Mesh(
-                    new THREE.BoxGeometry(cellSize, 300, 10),
+                    new THREE.BoxGeometry(cellSize, 10, 10),
                     new THREE.MeshStandardMaterial({ map: wallTexture })
                 );
-                wall.position.set(x, 150, z + cellSize / 2);
+                wall.position.set(x, 5, z + cellSize / 2);
                 wall.castShadow = true;
                 wall.receiveShadow = true;
                 mazeWalls.push(wall);
@@ -162,10 +163,10 @@ function drawMaze() {
             
             if (cell.walls.left) {
                 const wall = new THREE.Mesh(
-                    new THREE.BoxGeometry(10, 300, cellSize),
+                    new THREE.BoxGeometry(10, 10, cellSize),
                     new THREE.MeshStandardMaterial({ map: wallTexture })
                 );
-                wall.position.set(x - cellSize / 2, 150, z);
+                wall.position.set(x - cellSize / 2, 5, z);
                 wall.castShadow = true;
                 wall.receiveShadow = true;
                 mazeWalls.push(wall);
