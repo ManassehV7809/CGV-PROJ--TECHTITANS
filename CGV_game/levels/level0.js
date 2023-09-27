@@ -93,6 +93,8 @@ function removeWalls(a, b) {
 }
 
 function generateMaze() {
+ 
+
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             grid[i][j] = new Cell(i, j);
@@ -115,7 +117,29 @@ function generateMaze() {
             current = stack.pop();
         }
     }
+
+    // Marking the start and end cells
+    let startCell = grid[0][0];
+    let endCell = grid[rows - 1][cols - 1];
+    
+    // Creating the doorways
+    startCell.walls.top = false;
+    endCell.walls.bottom = false;
 }
+
+
+function drawEntryExitGround(x, z, color) {
+    const entryExitGround = new THREE.Mesh(
+        new THREE.PlaneGeometry(cellSize, cellSize, 1, 1),
+        new THREE.MeshStandardMaterial({
+            color: color,
+        })
+    );
+    entryExitGround.position.set(x, 0.01, z);  // 0.01 to slightly offset it above the main ground
+    entryExitGround.rotation.x = -Math.PI / 2;
+    return entryExitGround;
+}
+
 
 function drawMaze() {
     const wallTexture = new THREE.TextureLoader().load('../textures/brick_wall.jpg');
@@ -173,6 +197,14 @@ function drawMaze() {
             }
         }
     }
+
+    // Drawing special grounds for start and end cells
+    const startGround = drawEntryExitGround(-500 + cellSize / 2, -500 + cellSize / 2, 0x00FF00);  // Green for start
+    const endGround = drawEntryExitGround(500 - cellSize / 2, 500 - cellSize / 2, 0xFF0000);    // Red for end
+
+    mazeWalls.push(startGround);
+    mazeWalls.push(endGround);
+    
     return mazeWalls;
 }
 
@@ -194,18 +226,20 @@ const mazeObjects = drawMaze();
 // const wallTexture = new THREE.TextureLoader().load('../textures/brick_wall.jpg');
 // wall.material.map = wallTexture;
 
-const ball = new THREE.Mesh(
-    new THREE.SphereGeometry(5, 32, 32),
-    new THREE.MeshStandardMaterial({
-        color: 0xff0000,
-    })
-);
-ball.position.set(10, 5, 10);
-ball.castShadow = true;
+// const ball = new THREE.Mesh(
+//     new THREE.SphereGeometry(5, 32, 32),
+//     new THREE.MeshStandardMaterial({
+//         color: 0xff0000,
+//     })
+// );
+// ball.position.set(10, 5, 10);
+// ball.castShadow = true;
 // ball.receiveShadow = true;
 
 // Merge maze objects, wall, and ball into a single objects array
-let objects = [ball, ...mazeObjects];
+
+
+let objects = [...mazeObjects];
 
 let Level0 = new Level(lights, bg, plane, objects);
 
