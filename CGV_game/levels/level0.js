@@ -46,6 +46,9 @@ const rows = Math.floor(1000 / cellSize);
 const cols = Math.floor(1000 / cellSize);
 let grid = Array(rows).fill(null).map(() => Array(cols).fill(null));
 
+
+
+
 function Cell(i, j) {
     this.i = i;
     this.j = j;
@@ -160,8 +163,6 @@ function drawMaze() {
                 wall.receiveShadow = true;
                 mazeWalls.push(wall);
             }
-            
-            // Repeat the above process for right, bottom, and left walls
 
             if (cell.walls.right) {
                 const wall = new THREE.Mesh(
@@ -211,33 +212,6 @@ function drawMaze() {
 
 generateMaze();
 const mazeObjects = drawMaze();
-
-//Wall  definition
-// const wall = new THREE.Mesh(
-//     new THREE.BoxGeometry(250, 300, 10),
-//     new THREE.MeshStandardMaterial({
-      
-//     })
-// );
-// wall.position.set(0, 50, -50);
-// wall.castShadow = true;
-// wall.receiveShadow = true;
-
-// const wallTexture = new THREE.TextureLoader().load('../textures/brick_wall.jpg');
-// wall.material.map = wallTexture;
-
-// const ball = new THREE.Mesh(
-//     new THREE.SphereGeometry(5, 32, 32),
-//     new THREE.MeshStandardMaterial({
-//         color: 0xff0000,
-//     })
-// );
-// ball.position.set(10, 5, 10);
-// ball.castShadow = true;
-// ball.receiveShadow = true;
-
-// Merge maze objects, wall, and ball into a single objects array
-
 
 let objects = [...mazeObjects];
 

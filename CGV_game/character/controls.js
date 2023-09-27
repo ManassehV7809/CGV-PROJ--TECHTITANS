@@ -22,7 +22,10 @@ class BasicCharacterController {
     this._decceleration = new THREE.Vector3(-0.0005, -0.0001, -5.0);
     this._acceleration = new THREE.Vector3(1, 0.25, 100.0);
     this._velocity = new THREE.Vector3(0, 0, 0);
-    this._position = new THREE.Vector3();
+    this._position = new THREE.Vector3(-475,0.01,-475);
+
+
+
 
     this._animations = {};
     this._input = new BasicCharacterControllerInput();
@@ -43,6 +46,8 @@ class BasicCharacterController {
 
       this._target = fbx;
       this._params.scene.add(this._target);
+
+      this._target.position.set(-475, 0.01, -475);
 
       this._mixer = new THREE.AnimationMixer(this._target);
 
