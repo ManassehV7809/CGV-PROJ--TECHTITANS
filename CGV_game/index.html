@@ -19,6 +19,7 @@
         <h1 class="heading" onclick="startGame()">Start</h1>
         <h1 class="heading" onclick="openSubMenu('submenuLevels')">Levels</h1>
         <h1 class="heading" onclick="openSubMenu('submenuCredits')">Credits</h1>
+        <h1 class="heading" onclick="openSubMenu('submenuOptions')">Pause</h1>
          <h1 class="heading" onclick="openSubMenu('submenuControls')">Controls</h1>
         <h1 class="heading" onclick="quitGame()">Quit</h1>
     </div>
@@ -39,7 +40,12 @@
         <!-- Add more credits if needed -->
         <h2 class="heading" onclick="goBackToMainMenu()">Back</h2>
     </div>
-
+    <!-- Submenu for Pause -->
+    <div class="submenu" id="submenuOptions">
+        <h2 class="heading" onclick="startGame()">Resume</h2>
+        <h2 class="heading" onclick="startGame()">Restart</h2>
+        <h2 class="heading" onclick="startGame()">Exit</h2>
+    </div>
      <div class="submenu" id="submenuControls">
         <p>
             w - move forward
