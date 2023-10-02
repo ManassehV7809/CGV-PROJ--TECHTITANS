@@ -42,7 +42,7 @@ class Game {
     this._scene = new THREE.Scene();
 
     //loading level
-    this._SetLevel(Level2);
+    this._SetLevel(Level1);
 
     this._mixers = [];
     this._previousRAF = null;

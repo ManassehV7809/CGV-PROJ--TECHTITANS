@@ -238,11 +238,6 @@ let lights = [];
 
       let objects = [...mazeObjects];
 
-      let Level0 = new Level(lights, bg, plane, objects);
-
-
-
-
     let Level2 = new Level(lights, bg, plane, objects);
 
-    export default Level1;
+    export default Level2;

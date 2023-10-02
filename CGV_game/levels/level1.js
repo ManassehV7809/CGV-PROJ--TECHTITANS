@@ -237,12 +237,6 @@ let lights = [];
       const mazeObjects = drawMaze();
 
       let objects = [...mazeObjects];
-
-      let Level0 = new Level(lights, bg, plane, objects);
-
-
-
-
     let Level1 = new Level(lights, bg, plane, objects);
 
     export default Level1;
