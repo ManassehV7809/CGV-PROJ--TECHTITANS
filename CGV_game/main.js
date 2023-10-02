@@ -4,6 +4,7 @@ import {BasicCharacterController} from "./character/controls.js";
 import {ThirdPersonCamera} from "./camera/camera.js";
 import Level0 from "./levels/level0.js";
 import Level1 from "./levels/level1.js";
+import Level2 from "./levels/level2.js";
 
 
 // // Get a reference to the audio element
@@ -41,7 +42,7 @@ class Game {
     this._scene = new THREE.Scene();
 
     //loading level
-    this._SetLevel(Level0);
+    this._SetLevel(Level2);
 
     this._mixers = [];
     this._previousRAF = null;

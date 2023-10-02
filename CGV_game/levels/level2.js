@@ -63,7 +63,7 @@ let lights = [];
 
     // objects.push(Ball);
     // Maze constants and functions
-      const cellSize = 50;
+      const cellSize = 10;
       const rows = Math.floor(1000 / cellSize);
       const cols = Math.floor(1000 / cellSize);
       let grid = Array(rows).fill(null).map(() => Array(cols).fill(null));
@@ -167,7 +167,7 @@ let lights = [];
 
 
       function drawMaze() {
-          const wallTexture = new THREE.TextureLoader().load('../images/wall texture - vusani.avif');
+          const wallTexture = new THREE.TextureLoader().load('../textures/brick_wall.jpg');
           let mazeWalls = [];
           for (let i = 0; i < rows; i++) {
               for (let j = 0; j < cols; j++) {
@@ -243,6 +243,6 @@ let lights = [];
 
 
 
-    let Level1 = new Level(lights, bg, plane, objects);
+    let Level2 = new Level(lights, bg, plane, objects);
 
     export default Level1;
