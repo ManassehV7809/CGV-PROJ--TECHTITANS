@@ -40,7 +40,7 @@ let lights = [];
     plane.receiveShadow = true;
     plane.rotation.x = -Math.PI / 2;
 
-    const planeTexture = new THREE.TextureLoader().load('../textures/concrete.jpg');
+    const planeTexture = new THREE.TextureLoader().load('../images/ground texture -vusani.avif');
     plane.material.map = planeTexture;
 
     //todo: define objects
@@ -63,7 +63,7 @@ let lights = [];
 
     // objects.push(Ball);
     // Maze constants and functions
-      const cellSize = 10;
+      const cellSize = 40;
       const rows = Math.floor(1000 / cellSize);
       const cols = Math.floor(1000 / cellSize);
       let grid = Array(rows).fill(null).map(() => Array(cols).fill(null));
@@ -167,7 +167,7 @@ let lights = [];
 
 
       function drawMaze() {
-          const wallTexture = new THREE.TextureLoader().load('../textures/brick_wall.jpg');
+          const wallTexture = new THREE.TextureLoader().load('../images/wall texture too-vusani.avif');
           let mazeWalls = [];
           for (let i = 0; i < rows; i++) {
               for (let j = 0; j < cols; j++) {

@@ -40,7 +40,7 @@ let lights = [];
     plane.receiveShadow = true;
     plane.rotation.x = -Math.PI / 2;
 
-    const planeTexture = new THREE.TextureLoader().load('../textures/concrete.jpg');
+    const planeTexture = new THREE.TextureLoader().load('../images/ground texture - vusani.avif');
     plane.material.map = planeTexture;
 
     //todo: define objects
