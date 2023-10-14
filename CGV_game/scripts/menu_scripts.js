@@ -40,3 +40,24 @@
             // close the game window or return to the main menu.
             console.log('Quitting the game...');
         }
+        
+        // Countdown timer logic
+        let totalGameTime = 300; // 5 minutes (300 seconds)
+        let remainingTime = totalGameTime;
+
+        function updateRemainingTime() {
+            remainingTime--;
+
+            // Update the timer display
+            const minutes = Math.floor(remainingTime / 60);
+            const seconds = remainingTime % 60;
+            document.getElementById('timer').textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+            if (remainingTime <= 0) {
+                gameOver(); // Implement your game over logic
+            }
+        }
+
+        // Your game loop or interval timer (e.g., requestAnimationFrame) should call updateRemainingTime.
+        // Example using setInterval:
+        setInterval(updateRemainingTime, 1000); // Update every second
