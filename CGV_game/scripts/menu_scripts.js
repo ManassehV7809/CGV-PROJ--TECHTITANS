@@ -47,6 +47,9 @@
 
         function updateRemainingTime() {
             remainingTime--;
+            if (remainingTime < 0) {
+                remainingTime = 0;
+            }
 
             // Update the timer display
             const minutes = Math.floor(remainingTime / 60);
@@ -58,6 +61,5 @@
             }
         }
 
-        // Your game loop or interval timer (e.g., requestAnimationFrame) should call updateRemainingTime.
-        // Example using setInterval:
+
         setInterval(updateRemainingTime, 1000); // Update every second
