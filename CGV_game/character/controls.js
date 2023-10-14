@@ -23,7 +23,7 @@ class BasicCharacterController {
     this._acceleration = new THREE.Vector3(1, 0.25, 100.0);
     this._velocity = new THREE.Vector3(0, 0, 0);
     this._position =  new THREE.Vector3(params.startPosition.x, params.startPosition.y, params.startPosition.z);
-    this._world = null;
+    this._world =params.world;
     this.startPosition =params.startPosition;
 
     this._animations = {};

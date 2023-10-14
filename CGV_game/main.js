@@ -87,12 +87,12 @@ class Game {
 
   _LoadAnimatedModel() {
 
-
     const params = {
       camera: this._camera,
       scene: this._scene,
       world: this._level,
-      startPosition: this._level.startPosition
+      startPosition: this._level.startPosition,
+
     }
     this._controls = new BasicCharacterController(params);
 
