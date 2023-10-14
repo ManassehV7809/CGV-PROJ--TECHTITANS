@@ -63,3 +63,33 @@
 
 
         setInterval(updateRemainingTime, 1000); // Update every second
+
+        // Function to show the level completion pop-up
+        function showLevelCompletionPopup() {
+            const popup = document.getElementById('levelCompletionPopup');
+            popup.style.display = 'block';
+        }
+        
+        // Function to hide the level completion pop-up
+        function hideLevelCompletionPopup() {
+            const popup = document.getElementById('levelCompletionPopup');
+            popup.style.display = 'none';
+        }
+        
+        // Handle button clicks
+        document.getElementById('exitButton').addEventListener('click', () => {
+            // Implement code to exit the game or return to the main menu.
+            //example: window.location.href = 'main-menu.html';
+        });
+        
+        document.getElementById('nextLevelButton').addEventListener('click', () => {
+            // Implement code to continue to the next level.
+        });
+        
+        // Simulate level completion (call this when the user completes a level)
+        function simulateLevelCompletion() {
+            showLevelCompletionPopup();
+        }
+        
+       
+        
