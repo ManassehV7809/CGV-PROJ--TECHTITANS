@@ -47,7 +47,7 @@ class Game {
 
     //loading level
     this._level = null;
-    this._SetLevel(Level0);
+    this._SetLevel(Level2);
 
 
 

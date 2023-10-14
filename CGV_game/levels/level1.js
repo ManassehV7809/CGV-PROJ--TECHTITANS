@@ -28,9 +28,11 @@ let lights = [];
     //todo: define background
     let bg = new THREE.TextureLoader().load('./images/space.jpg');
 
+    const dim = 500;
+
     //todo: define ground
     const plane = new THREE.Mesh(
-        new THREE.PlaneGeometry(1000, 1000, 10, 10),
+        new THREE.PlaneGeometry(dim, dim, 10, 10),
         new THREE.MeshStandardMaterial({
 
 
@@ -64,8 +66,8 @@ let lights = [];
     // objects.push(Ball);
     // Maze constants and functions
       const cellSize = 50;
-      const rows = Math.floor(1000 / cellSize);
-      const cols = Math.floor(1000 / cellSize);
+      const rows = Math.floor(dim / cellSize);
+      const cols = Math.floor(dim / cellSize);
       let grid = Array(rows).fill(null).map(() => Array(cols).fill(null));
 
 
@@ -172,8 +174,8 @@ let lights = [];
           for (let i = 0; i < rows; i++) {
               for (let j = 0; j < cols; j++) {
                   const cell = grid[i][j];
-                  const x = i * cellSize - 500 + cellSize / 2;
-                  const z = j * cellSize - 500 + cellSize / 2;
+                  const x = i * cellSize - (dim/2) + cellSize / 2;
+                  const z = j * cellSize - (dim/2) + cellSize / 2;
 
                   if (cell.walls.top) {
                       const wall = new THREE.Mesh(
@@ -223,8 +225,8 @@ let lights = [];
           }
 
           // Drawing special grounds for start and end cells
-          const startGround = drawEntryExitGround(-500 + cellSize / 2, -500 + cellSize / 2, 0x00FF00);  // Green for start
-          const endGround = drawEntryExitGround(500 - cellSize / 2, 500 - cellSize / 2, 0xFF0000);    // Red for end
+          const startGround = drawEntryExitGround(-(dim/2) + cellSize / 2, -(dim/2) + cellSize / 2, 0x00FF00);  // Green for start
+          const endGround = drawEntryExitGround((dim/2)- cellSize / 2, (dim/2) - cellSize / 2, 0xFF0000);    // Red for end
 
           mazeWalls.push(startGround);
           mazeWalls.push(endGround);
@@ -237,6 +239,10 @@ let lights = [];
       const mazeObjects = drawMaze();
 
       let objects = [...mazeObjects];
-    let Level1 = new Level(lights, bg, plane, objects);
 
+
+          let startPosition = {x:-(dim/2) + cellSize / 2, y:0.01, z:-(dim/2) + cellSize / 2}
+
+
+    let Level1 = new Level(lights, bg, plane, objects, startPosition);
     export default Level1;
