@@ -10,11 +10,10 @@ import {Vector3} from "three";
 
 // // Get a reference to the audio element
 const audio = document.getElementById("myAudio");
-audio.volume = 0.0;
+audio.volume = 0.4;
 
 // const menu = document.getElementById("score");
 // menu.style.display = "none";
-
 
 
 class Game {
@@ -88,12 +87,12 @@ class Game {
 
   _LoadAnimatedModel() {
 
+
     const params = {
       camera: this._camera,
       scene: this._scene,
       world: this._level,
-      startPosition: this._level.startPosition,
-
+      startPosition: this._level.startPosition
     }
     this._controls = new BasicCharacterController(params);
 

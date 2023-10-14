@@ -23,8 +23,9 @@ class BasicCharacterController {
     this._acceleration = new THREE.Vector3(1, 0.25, 100.0);
     this._velocity = new THREE.Vector3(0, 0, 0);
     this._position =  new THREE.Vector3(params.startPosition.x, params.startPosition.y, params.startPosition.z);
-    this._world =params.world;
+    this._world = params.world;
     this.startPosition =params.startPosition;
+
     this._animations = {};
     this._input = new BasicCharacterControllerInput();
     this._stateMachine = new CharacterFSM(
@@ -86,7 +87,7 @@ class BasicCharacterController {
 
   Update(timeInSeconds) {
     if (!this._stateMachine._currentState) {
-      return;
+        return;
     }
 
     this._stateMachine.Update(timeInSeconds, this._input);
@@ -99,7 +100,8 @@ class BasicCharacterController {
     );
     frameDecceleration.multiplyScalar(timeInSeconds);
     frameDecceleration.z = Math.sign(frameDecceleration.z) * Math.min(
-        Math.abs(frameDecceleration.z), Math.abs(velocity.z));
+        Math.abs(frameDecceleration.z), Math.abs(velocity.z)
+    );
 
     velocity.add(frameDecceleration);
 
@@ -110,34 +112,31 @@ class BasicCharacterController {
 
     const acc = this._acceleration.clone();
     if (this._input._keys.shift) {
-      acc.multiplyScalar(2.0);
+        acc.multiplyScalar(2.0);
     }
 
     if (this._stateMachine._currentState.Name == 'dance') {
-      acc.multiplyScalar(0.0);
+        acc.multiplyScalar(0.0);
     }
 
     if (this._input._keys.forward) {
-      velocity.z += acc.z * timeInSeconds;
+        velocity.z += acc.z * timeInSeconds;
     }
     if (this._input._keys.backward) {
-      velocity.z -= acc.z * timeInSeconds;
+        velocity.z -= acc.z * timeInSeconds;
     }
     if (this._input._keys.left) {
-      _A.set(0, 1, 0);
-      _Q.setFromAxisAngle(_A, 4.0 * Math.PI * timeInSeconds * this._acceleration.y);
-      _R.multiply(_Q);
+        _A.set(0, 1, 0);
+        _Q.setFromAxisAngle(_A, 4.0 * Math.PI * timeInSeconds * this._acceleration.y);
+        _R.multiply(_Q);
     }
     if (this._input._keys.right) {
-      _A.set(0, 1, 0);
-      _Q.setFromAxisAngle(_A, 4.0 * -Math.PI * timeInSeconds * this._acceleration.y);
-      _R.multiply(_Q);
+        _A.set(0, 1, 0);
+        _Q.setFromAxisAngle(_A, 4.0 * -Math.PI * timeInSeconds * this._acceleration.y);
+        _R.multiply(_Q);
     }
 
     controlObject.quaternion.copy(_R);
-
-    const oldPosition = new THREE.Vector3();
-    oldPosition.copy(controlObject.position);
 
     const forward = new THREE.Vector3(0, 0, 1);
     forward.applyQuaternion(controlObject.quaternion);
@@ -150,26 +149,49 @@ class BasicCharacterController {
     sideways.multiplyScalar(velocity.x * timeInSeconds);
     forward.multiplyScalar(velocity.z * timeInSeconds);
 
-    controlObject.position.add(forward);
-    controlObject.position.add(sideways);
+    // Calculate the potential new position
+    const potentialPosition = controlObject.position.clone().add(forward).add(sideways);
 
-    this._position.copy(controlObject.position);
+    // If no collision detected at the potential position, update the character's position
+    if (!this._isColliding(potentialPosition)) {
+        controlObject.position.copy(potentialPosition);
+        this._position.copy(controlObject.position);
+    }
 
     if (this._mixer) {
-      this._mixer.update(timeInSeconds);
+        this._mixer.update(timeInSeconds);
     }
+}
+
+
+
+_isColliding() {
+  const characterBox = new THREE.Box3().setFromObject(this._target);
+
+  // Calculate the center of the bounding box
+  const center = characterBox.getCenter(new THREE.Vector3());
+
+  // Adjust the .min and .max properties. 
+  // This will shrink the box by moving its boundaries 10% towards the center.
+  const shrinkFactor = 0.1; 
+  characterBox.min.lerp(center, shrinkFactor);
+  characterBox.max.lerp(center, shrinkFactor);
+
+  for (let obj of this._world.objects) {
+      const objBox = new THREE.Box3().setFromObject(obj);
+      if (characterBox.intersectsBox(objBox)) {
+          return true;
+      }
   }
+
+  return false;
+}
+
 };
 
 class BasicCharacterControllerInput {
   constructor() {
     this._Init();
-    this._isFootStep = false;
-    this._isRunning = false;
-    this._footSteps = new Audio('./music/walkSound.mp3');
-    this._run = new Audio('./music/runningSound.mp3');
-    this._footSteps.playbackRate = 0.75;
-
   }
 
   _Init() {
@@ -185,22 +207,16 @@ class BasicCharacterControllerInput {
     document.addEventListener('keyup', (e) => this._onKeyUp(e), false);
   }
 
-
   _onKeyDown(event) {
-
     switch (event.keyCode) {
       case 87: // w
         this._keys.forward = true;
-        this._footSteps.playbackRate = 0.75;
-        this._footSteps.play().then(r => r).catch(e => console.log(e));
         break;
       case 65: // a
         this._keys.left = true;
         break;
       case 83: // s
         this._keys.backward = true;
-        this._footSteps.playbackRate = 0.75;
-        this._footSteps.play().then(r => r).catch(e => console.log(e));
         break;
       case 68: // d
         this._keys.right = true;
@@ -210,8 +226,6 @@ class BasicCharacterControllerInput {
         break;
       case 16: // SHIFT
         this._keys.shift = true;
-         this._footSteps.playbackRate = 1.9;
-        //this._footSteps.play().then(r => r).catch(e => console.log(e));
         break;
     }
   }
@@ -220,17 +234,12 @@ class BasicCharacterControllerInput {
     switch(event.keyCode) {
       case 87: // w
         this._keys.forward = false;
-         this._footSteps.pause();
-          this._footSteps.currentTime = 0;
         break;
       case 65: // a
         this._keys.left = false;
         break;
       case 83: // s
         this._keys.backward = false;
-        this._footSteps.playbackRate = 0.75;
-        this._footSteps.pause();
-        this._footSteps.currentTime = 0;
         break;
       case 68: // d
         this._keys.right = false;
@@ -240,9 +249,6 @@ class BasicCharacterControllerInput {
         break;
       case 16: // SHIFT
         this._keys.shift = false;
-        this._footSteps.playbackRate = 0.75;
-        //this._footSteps.pause();
-        //this._footSteps.currentTime = 0;
         break;
     }
   }
