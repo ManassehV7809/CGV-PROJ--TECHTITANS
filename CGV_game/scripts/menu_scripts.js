@@ -57,7 +57,7 @@
             document.getElementById('timer').textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
             if (remainingTime <= 0) {
-                gameOver(); // Implement your game over logic
+                // gameOver(); // Implement your game over logic
             }
         }
 
@@ -90,6 +90,8 @@
         function simulateLevelCompletion() {
             showLevelCompletionPopup();
         }
+
+        simulateLevelCompletion();
         
        
         

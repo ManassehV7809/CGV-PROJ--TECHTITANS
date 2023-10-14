@@ -165,6 +165,12 @@ class BasicCharacterController {
 class BasicCharacterControllerInput {
   constructor() {
     this._Init();
+    this._isFootStep = false;
+    this._isRunning = false;
+    this._footSteps = new Audio('./music/walkSound.mp3');
+    this._run = new Audio('./music/runningSound.mp3');
+    this._footSteps.playbackRate = 0.75;
+
   }
 
   _Init() {
@@ -180,16 +186,22 @@ class BasicCharacterControllerInput {
     document.addEventListener('keyup', (e) => this._onKeyUp(e), false);
   }
 
+
   _onKeyDown(event) {
+
     switch (event.keyCode) {
       case 87: // w
         this._keys.forward = true;
+        this._footSteps.playbackRate = 0.75;
+        this._footSteps.play().then(r => r).catch(e => console.log(e));
         break;
       case 65: // a
         this._keys.left = true;
         break;
       case 83: // s
         this._keys.backward = true;
+        this._footSteps.playbackRate = 0.75;
+        this._footSteps.play().then(r => r).catch(e => console.log(e));
         break;
       case 68: // d
         this._keys.right = true;
@@ -199,6 +211,8 @@ class BasicCharacterControllerInput {
         break;
       case 16: // SHIFT
         this._keys.shift = true;
+         this._footSteps.playbackRate = 1.9;
+        //this._footSteps.play().then(r => r).catch(e => console.log(e));
         break;
     }
   }
@@ -207,12 +221,17 @@ class BasicCharacterControllerInput {
     switch(event.keyCode) {
       case 87: // w
         this._keys.forward = false;
+         this._footSteps.pause();
+          this._footSteps.currentTime = 0;
         break;
       case 65: // a
         this._keys.left = false;
         break;
       case 83: // s
         this._keys.backward = false;
+        this._footSteps.playbackRate = 0.75;
+        this._footSteps.pause();
+        this._footSteps.currentTime = 0;
         break;
       case 68: // d
         this._keys.right = false;
@@ -222,6 +241,9 @@ class BasicCharacterControllerInput {
         break;
       case 16: // SHIFT
         this._keys.shift = false;
+        this._footSteps.playbackRate = 0.75;
+        //this._footSteps.pause();
+        //this._footSteps.currentTime = 0;
         break;
     }
   }
