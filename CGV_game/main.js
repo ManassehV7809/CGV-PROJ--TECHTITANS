@@ -10,7 +10,7 @@ import {Vector3} from "three";
 
 // // Get a reference to the audio element
 const audio = document.getElementById("myAudio");
-audio.volume = 0.1;
+audio.volume = 0.0;
 
 // const menu = document.getElementById("score");
 // menu.style.display = "none";

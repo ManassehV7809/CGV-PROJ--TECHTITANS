@@ -25,7 +25,6 @@ class BasicCharacterController {
     this._position =  new THREE.Vector3(params.startPosition.x, params.startPosition.y, params.startPosition.z);
     this._world =params.world;
     this.startPosition =params.startPosition;
-
     this._animations = {};
     this._input = new BasicCharacterControllerInput();
     this._stateMachine = new CharacterFSM(
