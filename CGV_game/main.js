@@ -5,6 +5,7 @@ import {ThirdPersonCamera} from "./camera/camera.js";
 import Level0 from "./levels/level0.js";
 import Level1 from "./levels/level1.js";
 import Level2 from "./levels/level2.js";
+import {Vector3} from "three";
 
 
 // // Get a reference to the audio element
@@ -17,7 +18,10 @@ audio.volume = 0.4;
 
 class Game {
   isPaused = true;
+
+
   constructor() {
+
     this._Initialize();
   }
 
@@ -42,16 +46,26 @@ class Game {
     this._scene = new THREE.Scene();
 
     //loading level
-    this._SetLevel(Level1);
+    this._level = null;
+    this._SetLevel(Level0);
+
+
 
     this._mixers = [];
     this._previousRAF = null;
+
 
     this._LoadAnimatedModel();
     this._RAF();
   }
 
   _SetLevel(level) {
+
+
+
+    this._level = level;
+
+
 
     //todo: add all lights
       for(let i = 0; i < level.lights.length; i++){
@@ -72,9 +86,13 @@ class Game {
   }
 
   _LoadAnimatedModel() {
+
+
     const params = {
       camera: this._camera,
       scene: this._scene,
+      world: this._level,
+      startPosition: this._level.startPosition
     }
     this._controls = new BasicCharacterController(params);
 
