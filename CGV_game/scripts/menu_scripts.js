@@ -1,20 +1,24 @@
 
         // JavaScript functions to control the menu and submenus
+
         function openSubMenu(submenuId) {
             // Hide the main menu and show the specified submenu
             document.getElementById('mainMenu').style.display = 'none';
             document.getElementById(submenuId).style.display = 'flex';
         }
 
-        function goBackToMainMenu() {
+       window.goBackToMainMenu= function (){
             // Hide all submenus and show the main menu
             document.querySelectorAll('.submenu').forEach(function (submenu) {
                 submenu.style.display = 'none';
             });
+            const popup = document.getElementById('levelCompletionPopup');
+            popup.style.display = 'none';
+
             document.getElementById('mainMenu').style.display = 'flex';
         }
 
-        function startGame() {
+         window.startGame = function() {
             const menu = document.getElementById("in-game-menu");
             menu.style.display = "block";
             // Add your code to start the game here
@@ -29,6 +33,7 @@
         //     document.querySelector('.heading:contains("Pause")').style.display = 'none';
         //     document.querySelector('.heading:contains("Resume")').style.display = 'block';
         }
+
 
         function resumeGame() {
         // Add your code to resume the game later
@@ -63,7 +68,6 @@
             }
         }
 
-
         setInterval(updateRemainingTime, 1000); // Update every second
 
         // Function to show the level completion pop-up
@@ -73,10 +77,10 @@
         }
         
         // Function to hide the level completion pop-up
-        function hideLevelCompletionPopup() {
-            const popup = document.getElementById('levelCompletionPopup');
-            popup.style.display = 'none';
-        }
+        // function hideLevelCompletionPopup() {
+        //     const popup = document.getElementById('levelCompletionPopup');
+        //     popup.style.display = 'none';
+        // }
         
         // Handle button clicks
         document.getElementById('exitButton').addEventListener('click', () => {
@@ -93,7 +97,8 @@
             showLevelCompletionPopup();
         }
 
-        simulateLevelCompletion();
-        
+
+
+
        
         

@@ -116,7 +116,7 @@ class BasicCharacterController {
         acc.multiplyScalar(2.0);
     }
 
-    if (this._stateMachine._currentState.Name == 'dance') {
+    if (this._stateMachine._currentState.Name === 'dance') {
         acc.multiplyScalar(0.0);
     }
 
@@ -165,6 +165,13 @@ class BasicCharacterController {
         this._position.copy(controlObject.position);
     }
 
+    if (this._isAtDestination()) {
+        this._stateMachine.SetState('dance');
+         const popup = document.getElementById('levelCompletionPopup');
+            popup.style.display = 'block';
+        console.log("Completed the maze!");
+    }
+
     if (this._mixer) {
         this._mixer.update(timeInSeconds);
     }
@@ -186,8 +193,13 @@ _isBoundingBoxColliding(box) {
     return false;
 }
 
+_isAtDestination(){
+    const distance = this._position.distanceTo(this._world.objects[this._world.objects.length - 1].position);
+    return distance < 15;
+}
 
-};
+
+}
 
 class BasicCharacterControllerInput {
   constructor() {

@@ -9,15 +9,17 @@
        <link rel="stylesheet" href="./pip.css">
       <link rel="stylesheet" href="./pip.css">
       <link rel="stylesheet" href="./game-ui.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
+        <script type="module" src="./main.js"></script>
       <script  src="./scripts/menu_scripts.js"></script>
+
 
   </head>
   <body>
     <canvas id="game" class="game-canvas"></canvas>
-
-
 
 
 <!--  start up menu  -->
@@ -33,7 +35,8 @@
 
     <!--  in-game UI  -->
     <div id="in-game-menu" class="game-ui">
-        <div class="timer" id="timer">Time: 5:00</div>
+        <div class="timer" id="timer"><i class="fas fa-camera"></i>
+        Time: 5:00</div>
         <canvas id="game_map" class="pip"></canvas>
 
     </div>
@@ -43,17 +46,28 @@
         <div class="popup-content">
             <h2>Congratulations!</h2>
             <p>You completed the level.</p>
-            <button id="exitButton">Exit</button>
-            <button id="nextLevelButton">Next Level</button>
+            <button id="exitButton">Restart</button>
+            <button id="nextLevelButton" onclick="goBackToMainMenu()">Main Menu</button>
+        </div>
+    </div>
+
+        <!-- Level fail Pop-up -->
+    <div id="levelFailPopup" class="popup">
+        <div class="popup-content">
+            <h2>FAiLED!</h2>
+            <p>You have failed to clear the maze in time.</p>
+            <button id="restartOnFail">Try again</button>
+            <button id="mainMenuFromFail" onclick="goBackToMainMenu()">Main Menu</button>
         </div>
     </div>
     
 
     <!-- Submenu for Levels -->
+
     <div class="submenu" id="submenuLevels">
-        <h2 class="heading" onclick="startGame()">Level 1</h2>
-        <h2 class="heading" onclick="startGame()">Level 2</h2>
-        <h2 class="heading" onclick="startGame()">Level 3</h2>
+        <h2 class="heading" onclick="initGame(0)">Level 1</h2>
+        <h2 class="heading" onclick="initGame(1)">Level 2</h2>
+        <h2 class="heading" onclick="initGame(2)">Level 3</h2>
         <!-- Add more levels if needed -->
         <h2 class="heading" onclick="goBackToMainMenu()">Back</h2>
     </div>
@@ -98,7 +112,7 @@
   Your browser does not support the audio element.
 </audio>
     </div>
-    <script type="module" src="./main.js"></script>
+
 
 
   </body>

@@ -1,154 +1,59 @@
 //todo: new things
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
-import {BasicCharacterController} from "./character/controls.js";
-import {ThirdPersonCamera} from "./camera/camera.js";
-import Level0 from "./levels/level0.js";
+import {Game} from "./game.js";
 import Level1 from "./levels/level1.js";
+import Level0 from "./levels/level0.js";
 import Level2 from "./levels/level2.js";
-import {Vector3} from "three";
 
-
-// // Get a reference to the audio element
+// Get a reference to the audio element
 const audio = document.getElementById("myAudio");
-audio.volume = 0.4;
+audio.volume = 0.00;
 
 const menu = document.getElementById("in-game-menu");
 menu.style.display = "none";
 
-
-class Game {
-  isPaused = true;
+window._APP = null;
 
 
-  constructor() {
 
-    this._Initialize();
+window.initGame = function (num){
+
+   //clean up
+      if (window._APP) {
+    window._APP.cleanup(); // Call the cleanup method on the existing _APP
   }
 
-  _Initialize() {
 
-    //todo: setting up a renderer
-    this._threejs = new THREE.WebGLRenderer({
-      canvas: document.querySelector('#game'),
-      antialias: true,
-    });
-    this._threejs.outputEncoding = THREE.sRGBEncoding;
-    this._threejs.shadowMap.enabled = true;
-    this._threejs.shadowMap.type = THREE.PCFSoftShadowMap;
-    this._threejs.setPixelRatio(window.devicePixelRatio);
-    this._threejs.setSize(window.innerWidth, window.innerHeight);
+       document.querySelectorAll('.submenu').forEach(function (submenu) {
+                submenu.style.display = 'none';
+            });
+            const popup = document.getElementById('levelCompletionPopup');
+            popup.style.display = 'none';
 
-        //todo: setting up a second renderer
-    this._threejs2 = new THREE.WebGLRenderer({
-      canvas: document.querySelector('#game_map'),
-      antialias: true,
-    });
-    this._threejs2.outputEncoding = THREE.sRGBEncoding;
-    this._threejs2.setPixelRatio(window.devicePixelRatio);
-    this._threejs2.setSize(window.innerWidth*0.2, window.innerWidth*0.2);
+             document.getElementById("in-game-menu").style.display = "block"
 
-    //todo: setting up a camera
-    this._camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight, 0.1, 1000);
-    this._camera.position.set(25, 10, 25);
+    //
+    window._APP = null;
 
+   switch (num) {
 
-   // todo: setting up a  map cam
-    this.secondCamera = new THREE.PerspectiveCamera(75,1.0, 0.1, 1000);
-    this.secondCamera.position.set(0, 250, 0);
-    this.secondCamera.lookAt(0,0,0);
-
-    //todo: setting up a scene
-    this._scene = new THREE.Scene();
-
-    //loading level
-    this._level = null;
-    this._SetLevel(Level0);
+         case 0:
+            window._APP = new Game(Level0);
+            break;
+            case 1:
+            window._APP = new Game(Level1);
+            break;
+            case 2:
+            window._APP = new Game(Level2);
+            break;
+   }
 
 
-    this._mixers = [];
-    this._previousRAF = null;
 
 
-    this._LoadAnimatedModel();
-    this._RAF();
-  }
 
-  _SetLevel(level) {
-
-    this._level = level;
-
-    //todo: add all lights
-      for(let i = 0; i < level.lights.length; i++){
-          this._scene.add(level.lights[i]);
-      }
-
-      //todo: add background
-        this._scene.background = level.background;
-
-      //todo: add ground
-        this._scene.add(level.ground);
-
-        //todo: add all objects -
-        for(let i = 0; i < level.objects.length; i++){
-            this._scene.add(level.objects[i]);
-        }
-
-  }
-
-  _LoadAnimatedModel() {
-
-    const params = {
-      camera: this._camera,
-      scene: this._scene,
-      world: this._level,
-      startPosition: this._level.startPosition
-    }
-    this._controls = new BasicCharacterController(params);
-
-    this._thirdPersonCamera = new ThirdPersonCamera({
-      camera: this._camera,
-      target: this._controls,
-    });
-  }
-
-  _OnWindowResize() {
-    this._camera.aspect = window.innerWidth / window.innerHeight;
-    this._camera.updateProjectionMatrix();
-    this._threejs.setSize(window.innerWidth, window.innerHeight);
-  }
-
-  _RAF() {
-    requestAnimationFrame((t) => {
-      if (this._previousRAF === null) {
-        this._previousRAF = t;
-      }
-
-      this._RAF();
-
-      this._threejs.render(this._scene, this._camera);
-      this._threejs2.render(this._scene, this.secondCamera);
-      this._Step(t - this._previousRAF);
-      this._previousRAF = t;
-    });
-  }
-
-  _Step(timeElapsed) {
-    const timeElapsedS = timeElapsed * 0.001;
-    if (this._mixers) {
-      this._mixers.map(m => m.update(timeElapsedS));
-    }
-
-    if (this._controls) {
-      this._controls.Update(timeElapsedS);
-    }
-
-    this._thirdPersonCamera.Update(timeElapsedS);
-  }
 }
 
 
-let _APP = null;
-
 window.addEventListener('DOMContentLoaded', () => {
-  _APP = new Game();
+   window._APP = new Game(Level0);
 });
