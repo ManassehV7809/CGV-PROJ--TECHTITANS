@@ -153,8 +153,14 @@ class BasicCharacterController {
     // Calculate the potential new position
     const potentialPosition = controlObject.position.clone().add(forward).add(sideways);
 
-    // If no collision detected at the potential position, update the character's position
-    if (!this._isColliding(potentialPosition)) {
+    // Compute the bounding box of the character and translate it to the potential position
+    const characterBox = new THREE.Box3().setFromObject(this._target);
+    const translation = potentialPosition.clone().sub(controlObject.position);
+    characterBox.min.add(translation);
+    characterBox.max.add(translation);
+
+    // Check for collision using the translated bounding box
+    if (!this._isBoundingBoxColliding(characterBox)) {
         controlObject.position.copy(potentialPosition);
         this._position.copy(controlObject.position);
     }
@@ -164,29 +170,22 @@ class BasicCharacterController {
     }
 }
 
+_isBoundingBoxColliding(box) {
+    const center = box.getCenter(new THREE.Vector3());
+    const shrinkFactor = 0.5; 
+    box.min.lerp(center, shrinkFactor);
+    box.max.lerp(center, shrinkFactor);
 
+    for (let obj of this._world.objects) {
+        const objBox = new THREE.Box3().setFromObject(obj);
+        if (box.intersectsBox(objBox)) {
+            return true;
+        }
+    }
 
-_isColliding() {
-  const characterBox = new THREE.Box3().setFromObject(this._target);
-
-  // Calculate the center of the bounding box
-  const center = characterBox.getCenter(new THREE.Vector3());
-
-  // Adjust the .min and .max properties. 
-  // This will shrink the box by moving its boundaries 10% towards the center.
-  const shrinkFactor = 0.1; 
-  characterBox.min.lerp(center, shrinkFactor);
-  characterBox.max.lerp(center, shrinkFactor);
-
-  for (let obj of this._world.objects) {
-      const objBox = new THREE.Box3().setFromObject(obj);
-      if (characterBox.intersectsBox(objBox)) {
-          return true;
-      }
-  }
-
-  return false;
+    return false;
 }
+
 
 };
 
@@ -236,7 +235,7 @@ class BasicCharacterControllerInput {
         break;
       case 16: // SHIFT
         this._keys.shift = true;
-        this._footSteps.playbackRate = 1.9;
+        this._footSteps.playbackRate = 1.2;
         //this._footSteps.play().then(r => r).catch(e => console.log(e));
         break;
     }

@@ -28,7 +28,7 @@ let lights = [];
     //todo: define background
     let bg = new THREE.TextureLoader().load('./images/space.jpg');
 
-    const dim = 1000;
+    const dim = 750;
 
     //todo: define ground
     const plane = new THREE.Mesh(
