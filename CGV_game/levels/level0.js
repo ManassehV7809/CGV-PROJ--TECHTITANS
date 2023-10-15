@@ -3,7 +3,7 @@ import Level from "./level_setting.js";
 
 
 // board dimension
-const dim = 250;
+const dim = 350;
 
   //todo: define lights
 let lights = [];
@@ -67,13 +67,6 @@ for (let config of pointLightConfigs) {
 // Define background
 let bg = new THREE.TextureLoader().load('../images/moon.jpg');
 
-// // Set up the skybox
-// const loader = new THREE.CubeTextureLoader();
-// const skybox = loader.load([
-//     '../images/space.jpgjpeg', '../images/space.jpgjpeg',
-//     '../images/space.jpgjpeg', '../images/space.jpgjpeg',
-//     '../images/space.jpgjpeg', '../images/space.jpgjpeg'
-// ]);
 
 
 const plane = new THREE.Mesh(
@@ -283,7 +276,6 @@ const mazeObjects = drawMaze();
 
 let objects = [...mazeObjects];
 
-// const startPosition = new THREE.Vector3(-(dim/2) + cellSize / 2, 0.01, -(dim/2) + cellSize / 2);
 
 let startPosition = {x:-(dim/2) + cellSize / 2, y:0.01, z:-(dim/2) + cellSize / 2}
 
