@@ -1,9 +1,13 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
 import Level from "./level_setting.js";
 
+
+// board dimension
+const dim = 250;
+
   //todo: define lights
 let lights = [];
-    let light = new THREE.PointLight(0xFFFFFF, 1.0);
+    let light = new THREE.PointLight(0xFFFFFF, 1.0)
     light.position.set(0, 100, 0);
     //light.target.position.set(0, 0, 0);
     light.castShadow = true;
@@ -21,24 +25,76 @@ let lights = [];
 
     lights.push(light);
 
-    light = new THREE.AmbientLight(0xffffff, 0.25);
-    lights.push(light);
+    // Ambient light with a colder hue for atmosphere
+light = new THREE.AmbientLight(0x8888aa, 0.4);
+lights.push(light);  
+   // Add soft directional light
+   const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 0.5);
+   directionalLight.position.set(5, 10, 5);
+   directionalLight.target.position.set(0, 0, 0);
+   directionalLight.castShadow = true;
+   lights.push(directionalLight);
+
+   // Additional directional light from the opposite direction for balanced lighting
+const oppositeDirectionalLight = new THREE.DirectionalLight(0xFFFFFF, 0.25);
+oppositeDirectionalLight.position.set(-5, 10, -5);
+oppositeDirectionalLight.target.position.set(0, 0, 0);
+lights.push(oppositeDirectionalLight);
+
+// Point lights with different colors, intensities, and positions
+const pointLightConfigs = [
+    {color: 0xFF0000, intensity: 0.4, distance: 150},
+    {color: 0x00FF00, intensity: 0.3, distance: 150},
+    {color: 0x0000FF, intensity: 0.5, distance: 150},
+    {color: 0xFFFFFF, intensity: 0.3, distance: 150},
+   //more..?
+];
+
+for (let config of pointLightConfigs) {
+    let pointLight = new THREE.PointLight(config.color, config.intensity, config.distance);
+    pointLight.position.set((Math.random() - 0.5) * dim, 5, (Math.random() - 0.5) * dim); // Random positions
+    lights.push(pointLight);
+}
+   
+   // Add some point lights to highlight crystal walls
+   const pointLightColors = [0xFF0000, 0x00FF00, 0x0000FF, 0xFFFFFF]; // These are just examples; adjust as needed.
+   for (let color of pointLightColors) {
+       let pointLight = new THREE.PointLight(color, 0.3, 150);
+       pointLight.position.set((Math.random() - 0.5) * dim, 5, (Math.random() - 0.5) * dim); // Random positions as an example
+       lights.push(pointLight);
+   }
 
 // Define background
-let bg = new THREE.TextureLoader().load('./images/space.jpg');
+let bg = new THREE.TextureLoader().load('../images/moon.jpg');
 
-const dim = 250;
+// // Set up the skybox
+// const loader = new THREE.CubeTextureLoader();
+// const skybox = loader.load([
+//     '../images/space.jpgjpeg', '../images/space.jpgjpeg',
+//     '../images/space.jpgjpeg', '../images/space.jpgjpeg',
+//     '../images/space.jpgjpeg', '../images/space.jpgjpeg'
+// ]);
 
-// Define ground
+
 const plane = new THREE.Mesh(
     new THREE.PlaneGeometry(dim, dim, 10, 10),
     new THREE.MeshStandardMaterial({
-        color: 0x808080,
+      color: 0x808080,
     })
-);
-plane.castShadow = false;
-plane.receiveShadow = true;
-plane.rotation.x = -Math.PI / 2;
+  );
+  plane.castShadow = false;
+  plane.receiveShadow = true;
+  plane.rotation.x = -Math.PI / 2;
+  
+  // Create a new texture loader
+  const loader2 = new THREE.TextureLoader();
+  
+  // Load the ground texture
+  const groundTexture = loader2.load('../textures/pave.jpg');
+  
+  // Set the map property of the ground material to the loaded texture
+  plane.material.map = groundTexture;
+  
 
 
 
@@ -137,15 +193,27 @@ function drawEntryExitGround(x, z, color) {
             color: color,
         })
     );
-    entryExitGround.position.set(x, 0.01, z);  // 0.01 to slightly offset it above the main ground
+    entryExitGround.position.set(x, 0.001, z);  // 0.01 to slightly offset it above the main ground
     entryExitGround.rotation.x = -Math.PI / 2;
     return entryExitGround;
 }
 
 
 function drawMaze() {
-    const wallTexture = new THREE.TextureLoader().load('../textures/brick_wall.jpg');
+    // Load your crystal texture
+    const crystalTexture = new THREE.TextureLoader().load('../images/crystal2.avif'); 
+
     let mazeWalls = [];
+
+    // Create a crystal material using the texture
+    const crystalMaterial = new THREE.MeshStandardMaterial({
+        map: crystalTexture,
+        transparent: true,
+        opacity: 0.87,
+        roughness: 0.1, // less roughness for more shine
+        metalness: 1
+    })
+
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             const cell = grid[i][j];
@@ -154,10 +222,10 @@ function drawMaze() {
 
             if (cell.walls.top) {
                 const wall = new THREE.Mesh(
-                    new THREE.BoxGeometry(cellSize, 10, 1), // Adjust height as defined
-                    new THREE.MeshStandardMaterial({ map: wallTexture }) // Set the wall texture
+                    new THREE.BoxGeometry(cellSize, 10, 1), 
+                    crystalMaterial
                 );
-                wall.position.set(x, 5, z - cellSize / 2); // Adjust the y-position
+                wall.position.set(x, 5, z - cellSize / 2);
                 wall.castShadow = true;
                 wall.receiveShadow = true;
                 mazeWalls.push(wall);
@@ -166,7 +234,7 @@ function drawMaze() {
             if (cell.walls.right) {
                 const wall = new THREE.Mesh(
                     new THREE.BoxGeometry(10, 10, cellSize),
-                    new THREE.MeshStandardMaterial({ map: wallTexture })
+                    crystalMaterial
                 );
                 wall.position.set(x + cellSize / 2, 5, z);
                 wall.castShadow = true;
@@ -177,7 +245,7 @@ function drawMaze() {
             if (cell.walls.bottom) {
                 const wall = new THREE.Mesh(
                     new THREE.BoxGeometry(cellSize, 10, 10),
-                    new THREE.MeshStandardMaterial({ map: wallTexture })
+                    crystalMaterial
                 );
                 wall.position.set(x, 5, z + cellSize / 2);
                 wall.castShadow = true;
@@ -188,7 +256,7 @@ function drawMaze() {
             if (cell.walls.left) {
                 const wall = new THREE.Mesh(
                     new THREE.BoxGeometry(10, 10, cellSize),
-                    new THREE.MeshStandardMaterial({ map: wallTexture })
+                    crystalMaterial
                 );
                 wall.position.set(x - cellSize / 2, 5, z);
                 wall.castShadow = true;
@@ -207,6 +275,7 @@ function drawMaze() {
     
     return mazeWalls;
 }
+
 
 
 generateMaze();

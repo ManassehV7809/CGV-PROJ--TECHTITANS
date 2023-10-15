@@ -6,6 +6,7 @@ class Level {
         this.ground = ground;
         this.objects = objects;
         this.startPosition = startPosition;
+       
     }
 
 }
