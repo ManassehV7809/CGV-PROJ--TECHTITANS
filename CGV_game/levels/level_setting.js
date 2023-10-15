@@ -1,11 +1,12 @@
 class Level {
-    constructor( lights, background, ground, objects, startPosition ) {
+    constructor( lights, effects, background, ground, objects, startPosition ) {
 
         this.lights = lights;
         this.background = background;
         this.ground = ground;
         this.objects = objects;
         this.startPosition = startPosition;
+        this.effects=effects;
        
     }
 

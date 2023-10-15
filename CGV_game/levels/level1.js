@@ -2,68 +2,72 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.mod
 import Level from "./level_setting.js";
 import Ball from '../models/ball.js'
 
-  //todo: define lights
+//todo: define lights
 let lights = [];
-    let light = new THREE.PointLight(0xFFFFFF, 1.0);
-    light.position.set(-100, 100, 100);
-    //light.target.position.set(0, 0, 0);
-    light.castShadow = true;
-    light.shadow.bias = -0.001;
-    light.shadow.mapSize.width = 500;
-    light.shadow.mapSize.height = 500;
-    light.shadow.camera.near = 0.1;
-    light.shadow.camera.far = 500.0;
-    light.shadow.camera.near = 0.5;
-    light.shadow.camera.far = 1000.0;
-    light.shadow.camera.left = 50;
-    light.shadow.camera.right = -50;
-    light.shadow.camera.top = 50;
-    light.shadow.camera.bottom = -50;
 
-    lights.push(light);
+// Point light
+let light = new THREE.PointLight(0xFF9900, 1.5);
+light.position.set(-100, 100, 100);
+light.castShadow = true;
+light.shadow.bias = -0.001;
+light.shadow.mapSize.width = 500;
+light.shadow.mapSize.height = 500;
+light.shadow.camera.near = 0.1;
+light.shadow.camera.far = 500.0;
+light.shadow.camera.near = 0.5;
+light.shadow.camera.far = 1000.0;
+light.shadow.camera.left = 50;
+light.shadow.camera.right = -50;
+light.shadow.camera.top = 50;
+light.shadow.camera.bottom = -50;
 
-    light = new THREE.AmbientLight(0xffffff, 0.25);
-    lights.push(light);
+lights.push(light);
+
+// Ambient light
+light = new THREE.AmbientLight(0xFF4500, 0.5);
+lights.push(light);
+
+// Spotlight
+let light1 = new THREE.SpotLight(0xFF9900, 0.5);
+light1.position.set(0, 100, 100);
+light1.target.position.set(0, 0, 0);
+light1.castShadow = true;
+light1.shadow.mapSize.width = 512;
+light1.shadow.mapSize.height = 512;
+light1.shadow.camera.near = 0.1;
+light1.shadow.camera.far = 1000.0;
+
+lights.push(light1);
+
+
+
 
     //todo: define background
-    let bg = new THREE.TextureLoader().load('./images/space.jpg');
+    let bg = new THREE.TextureLoader().load('../images/red day.jpg');
 
     const dim = 500;
 
-    //todo: define ground
-    const plane = new THREE.Mesh(
-        new THREE.PlaneGeometry(dim, dim, 10, 10),
-        new THREE.MeshStandardMaterial({
+ // Load the lava texture and bump map
+const planeTexture = new THREE.TextureLoader().load('../textures/lava.jpg');
+const planeBumpMap = new THREE.TextureLoader().load('../textures/lava_bump.jpg');
+
+// Define the plane with the lava material
+const plane = new THREE.Mesh(
+    new THREE.PlaneGeometry(dim, dim, 10, 10),
+    new THREE.MeshStandardMaterial({
+        map: planeTexture,          // Set the texture as the material's map
+        bumpMap: planeBumpMap,      // Set the bump map
+        bumpScale: 0.5              // Set the bump scale
+    })
+);
+
+plane.castShadow = false;
+plane.receiveShadow = true;
+plane.rotation.x = -Math.PI / 2;
 
 
-          }));
 
-    plane.castShadow = false;
-    plane.receiveShadow = true;
-    plane.rotation.x = -Math.PI / 2;
-
-    const planeTexture = new THREE.TextureLoader().load('../images/ground texture - vusani.avif');
-    plane.material.map = planeTexture;
-
-    //todo: define objects
-
-    // let objects = [];
-    //define wall
-    const wall = new THREE.Mesh(
-        new THREE.BoxGeometry(100, 100, 10),
-        new THREE.MeshStandardMaterial({
-            }));
-    wall.position.set(0, 50, -50);
-    wall.castShadow = true;
-    wall.receiveShadow = true;
-
-    //load texture
-    // const wallTexture = new THREE.TextureLoader().load('../textures/brick_wall.jpg');
-    // wall.material.map = wallTexture;
-
-    // objects.push(wall);
-
-    // objects.push(Ball);
+    
     // Maze constants and functions
       const cellSize = 50;
       const rows = Math.floor(dim / cellSize);
@@ -145,13 +149,7 @@ let lights = [];
               }
           }
 
-          // Marking the start and end cells
-          let startCell = grid[0][0];
-          let endCell = grid[rows - 1][cols - 1];
-          
-          // Creating the doorways
-          startCell.walls.top = false;
-          endCell.walls.bottom = false;
+      
       }
 
 
@@ -167,9 +165,17 @@ let lights = [];
           return entryExitGround;
       }
 
+      function createTorchLight(position) {
+        const torchLight = new THREE.PointLight(0xFFA500, 0.8, 50); // color is orange-ish, you can change intensity and distance
+        torchLight.position.set(position.x, position.y, position.z);
+        torchLight.castShadow = true;
+        return torchLight;
+    }
+    
+
 
       function drawMaze() {
-          const wallTexture = new THREE.TextureLoader().load('../images/wall texture - vusani.avif');
+          const wallTexture = new THREE.TextureLoader().load('../textures/lavawall.jpg');
           let mazeWalls = [];
           for (let i = 0; i < rows; i++) {
               for (let j = 0; j < cols; j++) {
@@ -242,7 +248,11 @@ let lights = [];
 
 
           let startPosition = {x:-(dim/2) + cellSize / 2, y:0.01, z:-(dim/2) + cellSize / 2}
+// Darker, more intense fog
+let fog = new THREE.FogExp2(0x4B1D1D, 0.0009);
 
 
-    let Level1 = new Level(lights, bg, plane, objects, startPosition);
+
+
+    let Level1 = new Level(lights, fog, bg, plane, objects, startPosition);
     export default Level1;

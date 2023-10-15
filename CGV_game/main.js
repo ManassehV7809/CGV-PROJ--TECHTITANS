@@ -57,3 +57,4 @@ window.initGame = function (num){
 window.addEventListener('DOMContentLoaded', () => {
    window._APP = new Game(Level0);
 });
+  

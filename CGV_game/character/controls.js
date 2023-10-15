@@ -179,7 +179,7 @@ class BasicCharacterController {
 
 _isBoundingBoxColliding(box) {
     const center = box.getCenter(new THREE.Vector3());
-    const shrinkFactor = 0.5; 
+    const shrinkFactor = 0.6; 
     box.min.lerp(center, shrinkFactor);
     box.max.lerp(center, shrinkFactor);
 

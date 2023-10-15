@@ -85,6 +85,10 @@ class Game {
             this._scene.add(level.objects[i]);
         }
 
+         // Set the fog for the scene
+    this._scene.fog = level.effects;
+    this._scene.add(level.effects);
+
   }
 
    setLevel(level) {

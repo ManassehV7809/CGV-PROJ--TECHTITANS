@@ -57,10 +57,10 @@ for (let config of pointLightConfigs) {
 }
    
    // Add some point lights to highlight crystal walls
-   const pointLightColors = [0xFF0000, 0x00FF00, 0x0000FF, 0xFFFFFF]; // These are just examples; adjust as needed.
+   const pointLightColors = [0xFF0000, 0x00FF00, 0x0000FF, 0xFFFFFF];
    for (let color of pointLightColors) {
        let pointLight = new THREE.PointLight(color, 0.3, 150);
-       pointLight.position.set((Math.random() - 0.5) * dim, 5, (Math.random() - 0.5) * dim); // Random positions as an example
+       pointLight.position.set((Math.random() - 0.5) * dim, 5, (Math.random() - 0.5) * dim); // Random positions 
        lights.push(pointLight);
    }
 
@@ -169,13 +169,7 @@ function generateMaze() {
         }
     }
 
-    // Marking the start and end cells
-    let startCell = grid[0][0];
-    let endCell = grid[rows - 1][cols - 1];
-    
-    // Creating the doorways
-    startCell.walls.top = false;
-    endCell.walls.bottom = false;
+   
 }
 
 
@@ -276,9 +270,10 @@ const mazeObjects = drawMaze();
 
 let objects = [...mazeObjects];
 
+let effects = null;
 
 let startPosition = {x:-(dim/2) + cellSize / 2, y:0.01, z:-(dim/2) + cellSize / 2}
 
-let Level0 = new Level(lights, bg, plane, objects, startPosition);
+let Level0 = new Level(lights,effects, bg, plane, objects, startPosition);
 
 export default Level0;

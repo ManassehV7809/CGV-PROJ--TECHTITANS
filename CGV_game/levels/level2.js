@@ -1,34 +1,47 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
 import Level from "./level_setting.js";
-import Ball from '../models/ball.js'
 
+
+//board dimension
+const dim = 800 ;
   //todo: define lights
-let lights = [];
-    let light = new THREE.PointLight(0xFFFFFF, 1.0);
-    light.position.set(-100, 100, 100);
-    //light.target.position.set(0, 0, 0);
-    light.castShadow = true;
-    light.shadow.bias = -0.001;
-    light.shadow.mapSize.width = 500;
-    light.shadow.mapSize.height = 500;
-    light.shadow.camera.near = 0.1;
-    light.shadow.camera.far = 500.0;
-    light.shadow.camera.near = 0.5;
-    light.shadow.camera.far = 1000.0;
-    light.shadow.camera.left = 50;
-    light.shadow.camera.right = -50;
-    light.shadow.camera.top = 50;
-    light.shadow.camera.bottom = -50;
+  let lights = [];
 
-    lights.push(light);
+ // Add a directional light to simulate sunlight
+const sunlight = new THREE.DirectionalLight(0xFFFFFF, 1.0);
+sunlight.position.set(100, 100, 100);
+sunlight.target.position.set(0, 0, 0);
+sunlight.castShadow = true;
+sunlight.shadow.mapSize.width = 500;
+sunlight.shadow.mapSize.height = 500;
+lights.push(sunlight);
 
-    light = new THREE.AmbientLight(0xffffff, 0.25);
-    lights.push(light);
+// Decrease the intensity of the ambient light
+const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.1);
+lights.push(ambientLight);
+
+  // Increase the intensity of the point light and make it a blue color
+  let moonlight = new THREE.PointLight(0x0000FF, 1.0);
+  moonlight.position.set(-100, 100, 100);
+  moonlight.castShadow = true;
+  moonlight.shadow.bias = -0.001;
+  moonlight.shadow.mapSize.width = 500;
+  moonlight.shadow.mapSize.height = 500;
+  moonlight.shadow.camera.near = 0.1;
+  moonlight.shadow.camera.far = 500.0;
+  moonlight.shadow.camera.near = 0.5; // This line seems redundant due to the previous line
+  moonlight.shadow.camera.far = 1000.0;
+  moonlight.shadow.camera.left = 50;
+  moonlight.shadow.camera.right = -50;
+  moonlight.shadow.camera.top = 50;
+  moonlight.shadow.camera.bottom = -50;
+  lights.push(moonlight);
+    
 
     //todo: define background
-    let bg = new THREE.TextureLoader().load('./images/space.jpg');
+    let bg = new THREE.TextureLoader().load('../images/day.jpg');
 
-    const dim = 750;
+  
 
     //todo: define ground
     const plane = new THREE.Mesh(
@@ -42,7 +55,7 @@ let lights = [];
     plane.receiveShadow = true;
     plane.rotation.x = -Math.PI / 2;
 
-    const planeTexture = new THREE.TextureLoader().load('../images/ground texture - vusani.avif');
+    const planeTexture = new THREE.TextureLoader().load('../textures/p.jpg');
     plane.material.map = planeTexture;
 
     //todo: define objects
@@ -169,7 +182,7 @@ let lights = [];
 
 
       function drawMaze() {
-          const wallTexture = new THREE.TextureLoader().load('../images/wall texture - vusani.avif');
+          const wallTexture = new THREE.TextureLoader().load('../textures/p.jpg');
           let mazeWalls = [];
           for (let i = 0; i < rows; i++) {
               for (let j = 0; j < cols; j++) {
@@ -243,6 +256,6 @@ let lights = [];
 
           let startPosition = {x:-(dim/2) + cellSize / 2, y:0.01, z:-(dim/2) + cellSize / 2}
 
-
-    let Level2 = new Level(lights, bg, plane, objects, startPosition);
+          let fog = new THREE.FogExp2(0xFFFFFF, 0.009);
+    let Level2 = new Level(lights,fog, bg, plane, objects, startPosition);
     export default Level2;
