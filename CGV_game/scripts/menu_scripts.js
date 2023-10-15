@@ -15,6 +15,8 @@
         }
 
         function startGame() {
+            const menu = document.getElementById("in-game-menu");
+            menu.style.display = "block";
             // Add your code to start the game here
             console.log('Starting the game...');
         // hide the menu and show the game

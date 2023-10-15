@@ -186,7 +186,7 @@ function drawEntryExitGround(x, z, color) {
             color: color,
         })
     );
-    entryExitGround.position.set(x, 0.001, z);  // 0.01 to slightly offset it above the main ground
+    entryExitGround.position.set(x, 0.008, z);  // 0.01 to slightly offset it above the main ground
     entryExitGround.rotation.x = -Math.PI / 2;
     return entryExitGround;
 }

@@ -12,8 +12,8 @@ import {Vector3} from "three";
 const audio = document.getElementById("myAudio");
 audio.volume = 0.4;
 
-// const menu = document.getElementById("score");
-// menu.style.display = "none";
+const menu = document.getElementById("in-game-menu");
+menu.style.display = "none";
 
 
 class Game {
@@ -38,9 +38,24 @@ class Game {
     this._threejs.setPixelRatio(window.devicePixelRatio);
     this._threejs.setSize(window.innerWidth, window.innerHeight);
 
+        //todo: setting up a second renderer
+    this._threejs2 = new THREE.WebGLRenderer({
+      canvas: document.querySelector('#game_map'),
+      antialias: true,
+    });
+    this._threejs2.outputEncoding = THREE.sRGBEncoding;
+    this._threejs2.setPixelRatio(window.devicePixelRatio);
+    this._threejs2.setSize(window.innerWidth*0.2, window.innerWidth*0.2);
+
     //todo: setting up a camera
     this._camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight, 0.1, 1000);
     this._camera.position.set(25, 10, 25);
+
+
+   // todo: setting up a  map cam
+    this.secondCamera = new THREE.PerspectiveCamera(75,1.0, 0.1, 1000);
+    this.secondCamera.position.set(0, 250, 0);
+    this.secondCamera.lookAt(0,0,0);
 
     //todo: setting up a scene
     this._scene = new THREE.Scene();
@@ -48,7 +63,6 @@ class Game {
     //loading level
     this._level = null;
     this._SetLevel(Level0);
-
 
 
     this._mixers = [];
@@ -61,11 +75,7 @@ class Game {
 
   _SetLevel(level) {
 
-
-
     this._level = level;
-
-
 
     //todo: add all lights
       for(let i = 0; i < level.lights.length; i++){
@@ -86,7 +96,6 @@ class Game {
   }
 
   _LoadAnimatedModel() {
-
 
     const params = {
       camera: this._camera,
@@ -117,6 +126,7 @@ class Game {
       this._RAF();
 
       this._threejs.render(this._scene, this._camera);
+      this._threejs2.render(this._scene, this.secondCamera);
       this._Step(t - this._previousRAF);
       this._previousRAF = t;
     });

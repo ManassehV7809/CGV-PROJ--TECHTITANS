@@ -6,13 +6,19 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
           <link rel="stylesheet" href="./style.css">
+       <link rel="stylesheet" href="./pip.css">
+      <link rel="stylesheet" href="./pip.css">
+      <link rel="stylesheet" href="./game-ui.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
       <script  src="./scripts/menu_scripts.js"></script>
 
   </head>
   <body>
-    <canvas id="game"></canvas>
+    <canvas id="game" class="game-canvas"></canvas>
+
+
+
 
 <!--  start up menu  -->
     <div class="menu" id="mainMenu">
@@ -25,8 +31,10 @@
 
     </div>
 
+    <!--  in-game UI  -->
     <div id="in-game-menu" class="game-ui">
         <div class="timer" id="timer">Time: 5:00</div>
+        <canvas id="game_map" class="pip"></canvas>
 
     </div>
 
