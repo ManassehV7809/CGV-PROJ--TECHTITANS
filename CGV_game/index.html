@@ -35,6 +35,14 @@
     <div id="in-game-menu" class="game-ui">
         <div class="timer" id="timer"><i class="fas fa-camera"></i>
         Time: 5:00</div>
+
+        <div id="icons-container">
+            <img src="./icons/speed_icon.svg" alt="Icon" width="30" height="30" style="color: white" id="speed-icon" class="speed-icon">
+        </div>
+
+
+
+
         <canvas id="game_map" class="pip"></canvas>
 
     </div>
@@ -44,7 +52,7 @@
         <div class="popup-content">
             <h2>Congratulations!</h2>
             <p>You completed the level.</p>
-            <button id="exitButton">Restart</button>
+            <button id="exitButton" onclick="restartGame()">Restart</button>
             <button id="nextLevelButton" onclick="goBackToMainMenu()">Main Menu</button>
         </div>
     </div>
@@ -54,7 +62,7 @@
         <div class="popup-content">
             <h2>FAiLED!</h2>
             <p>You have failed to clear the maze in time.</p>
-            <button id="restartOnFail">Try again</button>
+            <button id="restartOnFail" onclick="restartGame()">Try again</button>
             <button id="mainMenuFromFail" onclick="goBackToMainMenu()">Main Menu</button>
         </div>
     </div>

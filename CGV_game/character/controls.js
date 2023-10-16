@@ -21,7 +21,7 @@ class BasicCharacterController {
   _Init(params) {
     this._params = params;
     this._decceleration = new THREE.Vector3(-0.0005, -0.0001, -5.0);
-    this._acceleration = new THREE.Vector3(1, 0.25, 100.0);
+    this._acceleration = new THREE.Vector3(1, 0.25, 120.0);
     this._velocity = new THREE.Vector3(0, 0, 0);
     this._position =  new THREE.Vector3(params.startPosition.x, params.startPosition.y, params.startPosition.z);
     this._world = params.world;
@@ -33,6 +33,10 @@ class BasicCharacterController {
         new BasicCharacterControllerProxy(this._animations));
 
     this._LoadModels();
+
+    setTimeout(() => {
+        this._activateSpeedBoost();
+    }, 5000);
   }
 
   _LoadModels() {
@@ -171,6 +175,7 @@ class BasicCharacterController {
          const popup = document.getElementById('levelCompletionPopup');
             popup.style.display = 'block';
             console.log("Completed the maze!");
+            window.remainingTime = 6000;
             this._hasCompleted = true;
     }
 
@@ -200,6 +205,20 @@ _isAtDestination(){
     return distance < 15;
 }
 
+ _activateSpeedBoost() {
+    console.log("speed boost activated")
+   const speedIcon = document.getElementById('speed-icon');
+    speedIcon.style.display = 'block';
+   this._acceleration = new THREE.Vector3(1.5, 0.3, 200.0);
+
+    setTimeout(() => {
+        speedIcon.style.display = 'none';
+        console.log("speed boost deactivated")
+        this._acceleration = new THREE.Vector3(1, 0.25, 120.0);
+    }, 5000)
+
+ }
+
 
 }
 
@@ -208,9 +227,9 @@ class BasicCharacterControllerInput {
     this._Init();
     this._isFootStep = false;
     this._isRunning = false;
-    this._footSteps = new Audio('./music/walkSound.mp3');
-    this._run = new Audio('./music/runningSound.mp3');
-    this._footSteps.playbackRate = 0.75;
+    // this._footSteps = new Audio('./music/walkSound.mp3');
+    // this._run = new Audio('./music/runningSound.mp3');
+    window.singletons._footSteps.playbackRate = 0.75;
   }
 
   _Init() {
@@ -227,19 +246,20 @@ class BasicCharacterControllerInput {
   }
 
   _onKeyDown(event) {
+    console.log("key down");
     switch (event.keyCode) {
       case 87: // w
         this._keys.forward = true;
-        this._footSteps.playbackRate = 0.75;
-        this._footSteps.play().then(r => r).catch(e => console.log(e));
+        window.singletons._footSteps.playbackRate = 0.75;
+        window.singletons._footSteps.play().then(r => r).catch(e => console.log(e));
         break;
       case 65: // a
         this._keys.left = true;
         break;
       case 83: // s
         this._keys.backward = true;
-        this._footSteps.playbackRate = 0.75;
-        this._footSteps.play().then(r => r).catch(e => console.log(e));
+        window.singletons._footSteps.playbackRate = 0.75;
+        window.singletons._footSteps.play().then(r => r).catch(e => console.log(e));
         break;
       case 68: // d
         this._keys.right = true;
@@ -249,7 +269,7 @@ class BasicCharacterControllerInput {
         break;
       case 16: // SHIFT
         this._keys.shift = true;
-        this._footSteps.playbackRate = 1.2;
+      window.singletons._footSteps.playbackRate = 1.2;
         //this._footSteps.play().then(r => r).catch(e => console.log(e));
         break;
     }
@@ -259,17 +279,17 @@ class BasicCharacterControllerInput {
     switch(event.keyCode) {
       case 87: // w
         this._keys.forward = false;
-         this._footSteps.pause();
-          this._footSteps.currentTime = 0;
+         window.singletons._footSteps.pause();
+          window.singletons._footSteps.currentTime = 0;
         break;
       case 65: // a
         this._keys.left = false;
         break;
       case 83: // s
         this._keys.backward = false;
-        this._footSteps.playbackRate = 0.75;
-        this._footSteps.pause();
-        this._footSteps.currentTime = 0;
+        window.singletons._footSteps.playbackRate = 0.75;
+        window.singletons._footSteps.pause();
+      window.singletons._footSteps.currentTime = 0;
         break;
       case 68: // d
         this._keys.right = false;
@@ -279,12 +299,23 @@ class BasicCharacterControllerInput {
         break;
       case 16: // SHIFT
         this._keys.shift = false;
-        this._footSteps.playbackRate = 0.75;
+        window.singletons._footSteps.playbackRate = 0.75;
         //this._footSteps.pause();
         //this._footSteps.currentTime = 0;
         break;
     }
   }
-};
+
+    removeEventListeners() {
+    console.log("removing event listeners")
+    document.removeEventListener('keydown', (e) => this._onKeyDown(e), false);
+    document.removeEventListener('keyup', (e) => this._onKeyUp(e), false);
+    console.log("removed!!!!!!")
+  }
+
+
+
+
+}
 
 export { BasicCharacterControllerProxy, BasicCharacterControllerInput, BasicCharacterController };

@@ -11,7 +11,7 @@ class Level {
             this.time = time;
         }
         else{
-            this.time = 60;
+            this.time = 6000;
         }
        
     }

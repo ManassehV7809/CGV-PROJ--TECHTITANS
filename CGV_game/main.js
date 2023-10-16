@@ -6,12 +6,25 @@ import Level2 from "./levels/level2.js";
 
 // Get a reference to the audio element
 const audio = document.getElementById("myAudio");
-audio.volume = 0.00;
+audio.volume = 0.01;
 
 const menu = document.getElementById("in-game-menu");
 menu.style.display = "none";
 
 window._APP = null;
+
+window.gameState = {
+    _currentLevel: 0,
+    score: 0,
+    lives: 3,
+}
+
+window.singletons={
+
+    audio: audio,
+    _footSteps: new Audio('./music/walkSound.mp3'),
+    _run: new Audio('./music/runningSound.mp3'),
+}
 
 
 
@@ -19,7 +32,7 @@ window.initGame = function (num){
 
    //clean up
       if (window._APP) {
-    window._APP.cleanup(); // Call the cleanup method on the existing _APP
+   window._APP.cleanup(); // Call the cleanup method on the existing _APP
   }
 
 
@@ -35,20 +48,45 @@ window.initGame = function (num){
    switch (num) {
 
          case 0:
-            window._APP._Initialize(Level0);
+            window._APP._Initialize(Level0,250);
+            window.gameState._currentLevel = 0;
             break;
             case 1:
-            window._APP._Initialize(Level1);
+            window._APP._Initialize(Level1,350);
+            window.gameState._currentLevel = 1;
             break;
             case 2:
-            window._APP._Initialize(Level2);
+            window._APP._Initialize(Level2, 550);
+            window.gameState._currentLevel = 2;
             break;
    }
 
 }
 
+window.restartGame = function (){
+    window.stopGameTimer();
+    let popup = document.getElementById('levelFailPopup');
+    popup.style.display = 'none';
+    popup = document.getElementById('levelCompletionPopup');
+    popup.style.display = 'none';
+     popup = document.getElementById('mainMenu');
+    popup.style.display = 'none';
+    switch (window.gameState._currentLevel) {
+        case 0:
+            window._APP._Initialize(Level0,250);
+            break;
+            case 1:
+            window._APP._Initialize(Level1,350);
+            break;
+            case 2:
+            window._APP._Initialize(Level2, 550);
+            break;
+    }
+
+}
+
 
 window.addEventListener('DOMContentLoaded', () => {
-   window._APP = new Game(Level0);
+   window._APP = new Game(Level0,250);
 });
-  
+

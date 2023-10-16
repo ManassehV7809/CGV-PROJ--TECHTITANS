@@ -32,6 +32,9 @@
             console.log('Starting the game...');
         // hide the menu and show the game
              document.getElementById('mainMenu').style.display = 'none';
+              window.stopGameTimer();
+             window.initGame(0);
+
         }
         function pauseGame() {
         // Add your code to pause the game later

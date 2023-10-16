@@ -45,7 +45,6 @@ lights.push(ambientLight);
     //todo: define background
     let bg = new THREE.TextureLoader().load('../images/space.jpg');
 
-  
 
     //todo: define ground
     const plane = new THREE.Mesh(
@@ -290,16 +289,15 @@ lights.push(ambientLight);
           mazeWalls.push(startGround);
           mazeWalls.push(endGround);
 
-                    // Place random snowmen
-                  let  mazeObj=[]
-for(let i = 0; i < 25; i++) {
+        // Place random snowmen
+      let  mazeObj=[]
+for(let i = 0; i < 1; i++) {
     placeRandomSnowman(mazeObj)
         
       }
 
-      for(let i = 0; i < 100; i++) {
+      for(let i = 0; i < 5; i++) {
         placeRandomLanterns(mazeObj)
-            
           }
 
       mazeWalls.push(...mazeObj);
@@ -319,5 +317,5 @@ for(let i = 0; i < 25; i++) {
 
           let fog = new THREE.FogExp2(0xA7ADD0, 0.0009);
         
-    let Level2 = new Level(lights,fog, bg, plane, objects, startPosition);
+    let Level2 = new Level(lights,null, bg, plane, objects, startPosition, 300);
     export default Level2;

@@ -31,7 +31,7 @@ class Game {
       antialias: false,
     });
     this._threejs2.outputEncoding = THREE.sRGBEncoding;
-    this._threejs2.setPixelRatio(1);
+    this._threejs2.setPixelRatio(0.5);
     this._threejs2.setSize(window.innerWidth*0.2, window.innerWidth*0.2);
 
     //todo: setting up a camera
@@ -56,7 +56,6 @@ class Game {
    this.secondCamera = new THREE.PerspectiveCamera(75,1.0, 0.1, 1000);
    this.secondCamera.position.set(0, height, 0);
    this.secondCamera.lookAt(0,0,0);
-
 
 
     this._mixers = [];
@@ -97,30 +96,6 @@ class Game {
 
   }
 
-   setLevel(level) {
-
-    this._level = level;
-
-    //todo: add all lights
-      for(let i = 0; i < level.lights.length; i++){
-          this._scene.add(level.lights[i]);
-      }
-
-      //todo: add background
-        this._scene.background = level.background;
-
-      //todo: add ground
-        this._scene.add(level.ground);
-
-        //todo: add all objects -
-        for(let i = 0; i < level.objects.length; i++){
-            this._scene.add(level.objects[i]);
-        }
-
-  }
-  resetLevel() {
-    this._SetLevel(this._level);
-  }
   _LoadAnimatedModel() {
 
     const params = {
@@ -170,6 +145,7 @@ class Game {
 
     if (this._controls) {
       this._controls.Update(timeElapsedS);
+
     }
 
     this._thirdPersonCamera.Update(timeElapsedS);
@@ -182,6 +158,10 @@ class Game {
 
     // Remove event listeners
     window.removeEventListener('resize', this._OnWindowResize);
+
+    // Remove the controls
+       console.log("running the dispose method");
+    this._controls._input.removeEventListeners();
 
     // Remove objects from the scene (if necessary)
     this._scene.remove(this._level.ground);
@@ -200,6 +180,8 @@ class Game {
     this._controls = null;
     this._thirdPersonCamera = null;
   }
+
+
 }
 
 export {Game}

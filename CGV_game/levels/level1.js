@@ -253,5 +253,5 @@ plane.rotation.x = -Math.PI / 2;
           let effect = null;
 
 
-    let Level1 = new Level(lights, effect, bg, plane, objects, startPosition);
+    let Level1 = new Level(lights, effect, bg, plane, objects, startPosition, 120);
     export default Level1;

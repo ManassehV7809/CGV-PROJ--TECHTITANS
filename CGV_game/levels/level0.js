@@ -12,8 +12,8 @@ let lights = [];
     //light.target.position.set(0, 0, 0);
     light.castShadow = true;
     light.shadow.bias = -0.001;
-    light.shadow.mapSize.width = 3000;
-    light.shadow.mapSize.height = 3000;
+    light.shadow.mapSize.width = 500;
+    light.shadow.mapSize.height = 500;
     light.shadow.camera.near = 0.1;
     light.shadow.camera.far = 500.0;
     light.shadow.camera.near = 0.5;
@@ -293,6 +293,6 @@ let effects = null;
 
 let startPosition = {x:-(dim/2) + cellSize / 2, y:0.01, z:-(dim/2) + cellSize / 2}
 
-let Level0 = new Level(lights,effects, bg, plane, objects, startPosition, 60);
+let Level0 = new Level(lights,effects, bg, plane, objects, startPosition, 45);
 
 export default Level0;
