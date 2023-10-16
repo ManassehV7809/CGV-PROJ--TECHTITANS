@@ -1,50 +1,54 @@
 <!doctype html>
 <html lang="en">
 
-
-  <head>
+<head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-          <link rel="stylesheet" href="./style.css">
-       <link rel="stylesheet" href="./pip.css">
-      <link rel="stylesheet" href="./pip.css">
-      <link rel="stylesheet" href="./game-ui.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./pip.css">
+    <link rel="stylesheet" href="./game-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
-        <script type="module" src="./main.js"></script>
-      <script  src="./scripts/menu_scripts.js"></script>
+    <script type="module" src="./main.js"></script>
+    <script src="./scripts/menu_scripts.js"></script>
+    <script>
+        function playSound(soundId) {
+            document.getElementById(soundId).play();
+        }
 
+        function showFailPopup() {
+            document.getElementById("levelFailPopup").style.display = 'block';
+            playSound('losingSound');
+        }
 
-  </head>
-  <body>
+        function showCompletionPopup() {
+            document.getElementById("levelCompletionPopup").style.display = 'block';
+            playSound('CompletionSound');
+        }
+    </script>
+</head>
+
+<body>
     <canvas id="game" class="game-canvas"></canvas>
 
-
-<!--  start up menu  -->
+    <!-- Start-up Menu -->
     <div class="menu" id="mainMenu">
         <h1 class="heading" onclick="startGame()">Start</h1>
         <h1 class="heading" onclick="openSubMenu('submenuLevels')">Levels</h1>
         <h1 class="heading" onclick="openSubMenu('submenuCredits')">Credits</h1>
-         <h1 class="heading" onclick="openSubMenu('submenuControls')">Controls</h1>
-
+        <h1 class="heading" onclick="openSubMenu('submenuControls')">Controls</h1>
     </div>
 
-    <!--  in-game UI  -->
+    <!-- In-game UI -->
     <div id="in-game-menu" class="game-ui">
-        <div class="timer" id="timer"><i class="fas fa-camera"></i>
-        Time: 5:00</div>
+        <div class="timer" id="timer"><i class="fas fa-camera"></i> Time: 5:00</div>
 
         <div id="icons-container">
             <img src="./icons/speed_icon.svg" alt="Icon" width="30" height="30" style="color: white" id="speed-icon" class="speed-icon">
         </div>
 
-
-
-
         <canvas id="game_map" class="pip"></canvas>
-
     </div>
 
     <!-- Level Completion Pop-up -->
@@ -57,24 +61,21 @@
         </div>
     </div>
 
-        <!-- Level fail Pop-up -->
+    <!-- Level Fail Pop-up -->
     <div id="levelFailPopup" class="popup">
         <div class="popup-content">
-            <h2>FAiLED!</h2>
+            <h2>FAILED!</h2>
             <p>You have failed to clear the maze in time.</p>
             <button id="restartOnFail" onclick="restartGame()">Try again</button>
             <button id="mainMenuFromFail" onclick="goBackToMainMenu()">Main Menu</button>
         </div>
     </div>
-    
 
     <!-- Submenu for Levels -->
-
     <div class="submenu" id="submenuLevels">
         <h2 class="heading" onclick="initGame(0)">Level 1</h2>
         <h2 class="heading" onclick="initGame(1)">Level 2</h2>
         <h2 class="heading" onclick="initGame(2)">Level 3</h2>
-        <!-- Add more levels if needed -->
         <h2 class="heading" onclick="goBackToMainMenu()">Back</h2>
     </div>
 
@@ -82,43 +83,40 @@
     <div class="submenu" id="submenuCredits">
         <h2 class="heading">Game Design: Your Name</h2>
         <h2 class="heading">Artwork: Artist's Name</h2>
-        <!-- Add more credits if needed -->
-        <h2 class="heading" onclick="goBackToMainMenu()">Back</h2>
-    </div>
-    <!-- Submenu for Pause -->
-    <div class="submenu" id="submenuOptions">
-        <h2 class="heading" onclick="startGame()">Resume</h2>
-        <h2 class="heading" onclick="startGame()">Restart</h2>
-        <h2 class="heading" onclick="startGame()">Exit</h2>
-        <h2 class="heading" onclick="goBackToMainMenu()">Back</h2>
-    </div>
-     <div class="submenu" id="submenuControls">
-        <p>
-            w - move forward
-        <p>
-         <p>
-            s - move backwards
-        <p>
-         <p>
-            d - to rotate right
-        <p>
-         <p>
-            a - to rotate left
-        <p>
-          <p>
-            left-Shift - to sprint
-        <p>
-        <!-- Add more credits if needed -->
         <h2 class="heading" onclick="goBackToMainMenu()">Back</h2>
     </div>
 
+    <!-- Submenu for Controls -->
+    <div class="submenu" id="submenuControls">
+        <p> w - move forward </p>
+        <p> s - move backward </p>
+        <p> d - rotate right </p>
+        <p> a - rotate left </p>
+        <p> left-Shift - sprint </p>
+        <h2 class="heading" onclick="goBackToMainMenu()">Back</h2>
+    </div>
+
+    <!-- Audio Elements -->
     <div>
-           <audio id="myAudio" autoplay="autoplay" >
-  <source src="./music/Jim Yosef - Link [NCS Release].mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
+        <audio id="myAudio" autoplay="autoplay">
+            <source src="./music/Jim Yosef - Link [NCS Release].mp3" type="audio/mpeg"> Your browser does not support the audio element.
+        </audio>
     </div>
+    <div>
+        <audio id="CompletionSound">
+            <source src="./music/winning_sound.wav" type="audio/mpeg">
+        </audio>
+    </div>
+    <div>
+        <audio id="losingSound">
+            <source src="./music/losing_sound.wav" type="audio/mpeg">
+        </audio>
+    </div>
+    <div>
+        <audio id="crashSound">
+            <source src="./music/crash.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+</body>
 
-
-  </body>
 </html>

@@ -1,6 +1,6 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
 import Level from "./level_setting.js";
-import Ball from '../models/ball.js'
+import { createLavaRock } from '../models/lavarock.js';
 
 //todo: define lights
 let lights = [];
@@ -165,12 +165,32 @@ plane.rotation.x = -Math.PI / 2;
           return entryExitGround;
       }
 
-      function createTorchLight(position) {
-        const torchLight = new THREE.PointLight(0xFFA500, 0.8, 50); // color is orange-ish, you can change intensity and distance
-        torchLight.position.set(position.x, position.y, position.z);
-        torchLight.castShadow = true;
-        return torchLight;
+
+      const start = {x: -(dim/2) + cellSize / 2, z: -(dim/2) + cellSize / 2};
+      const end = {x: (dim/2) - cellSize / 2, z: (dim/2) - cellSize / 2};
+
+
+      function positionCollidesWithStartOrEnd(x, z, start, end) {
+        return (x === start.x && z === start.z) || (x === end.x && z === end.z);
     }
+    
+    function placeRandomlavarock(objects) {
+        const lavarock = createLavaRock();
+    
+        // Calculate random position inside the maze
+        let x = Math.floor(Math.random() * rows) * cellSize - (dim/2) + cellSize / 2;
+        let z = Math.floor(Math.random() * cols) * cellSize - (dim/2) + cellSize / 2;
+    
+        while (positionCollidesWithStartOrEnd(x, z, start, end)) {
+            x = Math.floor(Math.random() * rows) * cellSize - (dim/2) + cellSize / 2;
+            z = Math.floor(Math.random() * cols) * cellSize - (dim/2) + cellSize / 2;
+        }
+    
+        lavarock.position.set(x, 0, z);
+        objects.push(lavarock);
+    }
+
+     
     
 
 
@@ -235,10 +255,26 @@ plane.rotation.x = -Math.PI / 2;
           const endGround = drawEntryExitGround((dim/2)- cellSize / 2, (dim/2) - cellSize / 2, 0xFF0000);    // Red for end
 
           mazeWalls.push(startGround);
-          mazeWalls.push(endGround);
+          let  mazeObj=[]
+          for(let i = 0; i < 20; i++) {
+              placeRandomlavarock(mazeObj)
+                  
+                }
           
-          return mazeWalls;
-      }
+                mazeWalls.push(...mazeObj);
+          
+                    mazeWalls.push(endGround);
+          
+
+        
+            
+          
+          
+                    return mazeWalls;
+                }
+          
+
+      
 
 
       generateMaze();

@@ -287,20 +287,23 @@ lights.push(ambientLight);
           const endGround = drawEntryExitGround((dim/2)- cellSize / 2, (dim/2) - cellSize / 2, 0xFF0000);    // Red for end
 
           mazeWalls.push(startGround);
-          mazeWalls.push(endGround);
 
-        // Place random snowmen
+                // Place random snowmen
       let  mazeObj=[]
-for(let i = 0; i < 1; i++) {
+for(let i = 0; i < 3; i++) {
     placeRandomSnowman(mazeObj)
         
       }
 
-      for(let i = 0; i < 5; i++) {
+      for(let i = 0; i < 3; i++) {
         placeRandomLanterns(mazeObj)
           }
 
       mazeWalls.push(...mazeObj);
+
+          mazeWalls.push(endGround);
+
+  
 
 
           return mazeWalls;

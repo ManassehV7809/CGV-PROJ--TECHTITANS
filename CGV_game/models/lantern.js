@@ -23,6 +23,7 @@ function createLantern() {
     // Emitting light from the light bulb
     const emittedLight = new THREE.PointLight(0xFFFF00, 5, 12);  // Yellow color, intensity of 2, and distance of 10 units
     emittedLight.position.copy(lightBulb.position);
+    emittedLight.castShadow = true;
 
     // Handle
     const handleGeometry = new THREE.TorusGeometry(0.7, 0.1, 16, 100, Math.PI);
