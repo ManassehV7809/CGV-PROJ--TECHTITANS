@@ -37,13 +37,13 @@ window.initGame = function (num){
    switch (num) {
 
          case 0:
-            window._APP = new Game(Level0);
+            window._APP = new Game(Level0,250);
             break;
             case 1:
-            window._APP = new Game(Level1);
+            window._APP = new Game(Level1,350);
             break;
             case 2:
-            window._APP = new Game(Level2);
+            window._APP = new Game(Level2,550);
             break;
    }
 

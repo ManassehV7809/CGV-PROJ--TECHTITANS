@@ -1,14 +1,17 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
 import Level from "./level_setting.js";
+import { createSnowman } from '../models/snowman';
+import {  createLantern } from '../models/lantern.js';
 
 
 //board dimension
-const dim = 800 ;
+const dim = 850 ;
   //todo: define lights
   let lights = [];
 
  // Add a directional light to simulate sunlight
-const sunlight = new THREE.DirectionalLight(0xFFFFFF, 1.0);
+const sunlight = new THREE.DirectionalLight(0xFFFFFF, 0.1);
+sunlight.intensity = 0.5;
 sunlight.position.set(100, 100, 100);
 sunlight.target.position.set(0, 0, 0);
 sunlight.castShadow = true;
@@ -21,7 +24,8 @@ const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.1);
 lights.push(ambientLight);
 
   // Increase the intensity of the point light and make it a blue color
-  let moonlight = new THREE.PointLight(0x0000FF, 1.0);
+  let moonlight = new THREE.PointLight(0x0000FF, 0.5);
+  moonlight.intensity = 1.5;
   moonlight.position.set(-100, 100, 100);
   moonlight.castShadow = true;
   moonlight.shadow.bias = -0.001;
@@ -39,7 +43,7 @@ lights.push(ambientLight);
     
 
     //todo: define background
-    let bg = new THREE.TextureLoader().load('../images/day.jpg');
+    let bg = new THREE.TextureLoader().load('../images/space.jpg');
 
   
 
@@ -158,14 +162,8 @@ lights.push(ambientLight);
               }
           }
 
-          // Marking the start and end cells
-          let startCell = grid[0][0];
-          let endCell = grid[rows - 1][cols - 1];
 
-          // Creating the doorways
-          startCell.walls.top = false;
-          endCell.walls.bottom = false;
-      }
+    }
 
 
       function drawEntryExitGround(x, z, color) {
@@ -179,6 +177,54 @@ lights.push(ambientLight);
           entryExitGround.rotation.x = -Math.PI / 2;
           return entryExitGround;
       }
+
+      const start = {x: -(dim/2) + cellSize / 2, z: -(dim/2) + cellSize / 2};
+      const end = {x: (dim/2) - cellSize / 2, z: (dim/2) - cellSize / 2};
+
+
+      function positionCollidesWithStartOrEnd(x, z, start, end) {
+        return (x === start.x && z === start.z) || (x === end.x && z === end.z);
+    }
+    
+    function placeRandomSnowman(objects) {
+        const snowman = createSnowman();
+    
+        // Calculate random position inside the maze
+        let x = Math.floor(Math.random() * rows) * cellSize - (dim/2) + cellSize / 2;
+        let z = Math.floor(Math.random() * cols) * cellSize - (dim/2) + cellSize / 2;
+    
+        while (positionCollidesWithStartOrEnd(x, z, start, end)) {
+            x = Math.floor(Math.random() * rows) * cellSize - (dim/2) + cellSize / 2;
+            z = Math.floor(Math.random() * cols) * cellSize - (dim/2) + cellSize / 2;
+        }
+    
+        snowman.position.set(x, 0, z);
+        objects.push(snowman);
+    }
+    
+    function placeRandomLanterns(objects) {
+        const lantern = createLantern();
+
+
+    
+        // Calculate random position inside the maze
+        let x = Math.floor(Math.random() * rows) * cellSize - (dim/2) + cellSize / 2;
+        let z = Math.floor(Math.random() * cols) * cellSize - (dim/2) + cellSize / 2;
+    
+        while (positionCollidesWithStartOrEnd(x, z, start, end)) {
+            x = Math.floor(Math.random() * rows) * cellSize - (dim/2) + cellSize / 2;
+            z = Math.floor(Math.random() * cols) * cellSize - (dim/2) + cellSize / 2;
+        }
+    
+        lantern.position.set(x, 0, z);
+        
+        const lanternLight = new THREE.PointLight(0xFFFF00, 1, 100);
+        lanternLight.position.set(x, 5, z);  // Adjust the height (y value) as needed
+        objects.push(lanternLight);
+        objects.push(lantern);
+    }
+    
+    
 
 
       function drawMaze() {
@@ -244,6 +290,21 @@ lights.push(ambientLight);
           mazeWalls.push(startGround);
           mazeWalls.push(endGround);
 
+                    // Place random snowmen
+                  let  mazeObj=[]
+for(let i = 0; i < 25; i++) {
+    placeRandomSnowman(mazeObj)
+        
+      }
+
+      for(let i = 0; i < 100; i++) {
+        placeRandomLanterns(mazeObj)
+            
+          }
+
+      mazeWalls.push(...mazeObj);
+
+
           return mazeWalls;
       }
 
@@ -256,6 +317,7 @@ lights.push(ambientLight);
 
           let startPosition = {x:-(dim/2) + cellSize / 2, y:0.01, z:-(dim/2) + cellSize / 2}
 
-          let fog = new THREE.FogExp2(0xFFFFFF, 0.009);
+          let fog = new THREE.FogExp2(0xA7ADD0, 0.0009);
+        
     let Level2 = new Level(lights,fog, bg, plane, objects, startPosition);
     export default Level2;
