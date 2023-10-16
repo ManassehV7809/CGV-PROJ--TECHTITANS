@@ -248,11 +248,10 @@ plane.rotation.x = -Math.PI / 2;
 
 
           let startPosition = {x:-(dim/2) + cellSize / 2, y:0.01, z:-(dim/2) + cellSize / 2}
-// Darker, more intense fog
-let fog = new THREE.FogExp2(0x4B1D1D, 0.0009);
+
+         
+          let effect = null;
 
 
-
-
-    let Level1 = new Level(lights, fog, bg, plane, objects, startPosition);
+    let Level1 = new Level(lights, effect, bg, plane, objects, startPosition);
     export default Level1;

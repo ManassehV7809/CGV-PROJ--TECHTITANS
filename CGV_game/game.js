@@ -7,12 +7,12 @@ class Game {
   isPaused = true;
 
 
-  constructor(thing) {
+  constructor(thing,height) {
 
-    this._Initialize(thing);
+    this._Initialize(thing,height);
   }
 
-  _Initialize(thing) {
+  _Initialize(thing,height) {
 
     //todo: setting up a renderer
     this._threejs = new THREE.WebGLRenderer({
@@ -39,10 +39,6 @@ class Game {
     this._camera.position.set(25, 10, 25);
 
 
-   // todo: setting up a  map cam
-    this.secondCamera = new THREE.PerspectiveCamera(75,1.0, 0.1, 1000);
-    this.secondCamera.position.set(0, 250, 0);
-    this.secondCamera.lookAt(0,0,0);
 
     //todo: setting up a scene
     this._scene = new THREE.Scene();
@@ -54,6 +50,12 @@ class Game {
     }else {
       this._SetLevel(Level0);
     }
+
+    
+   // todo: setting up a  map cam
+   this.secondCamera = new THREE.PerspectiveCamera(75,1.0, 0.1, 1000);
+   this.secondCamera.position.set(0, height, 0);
+   this.secondCamera.lookAt(0,0,0);
 
 
 
