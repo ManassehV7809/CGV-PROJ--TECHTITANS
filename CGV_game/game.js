@@ -28,10 +28,10 @@ class Game {
         //todo: setting up a second renderer
     this._threejs2 = new THREE.WebGLRenderer({
       canvas: document.querySelector('#game_map'),
-      antialias: true,
+      antialias: false,
     });
     this._threejs2.outputEncoding = THREE.sRGBEncoding;
-    this._threejs2.setPixelRatio(window.devicePixelRatio);
+    this._threejs2.setPixelRatio(1);
     this._threejs2.setSize(window.innerWidth*0.2, window.innerWidth*0.2);
 
     //todo: setting up a camera
@@ -60,6 +60,10 @@ class Game {
     this._mixers = [];
     this._previousRAF = null;
 
+    window.totalGameTime = this._level.time; // 5 minutes (300 seconds)
+    window.remainingTime = window.totalGameTime;
+
+    window.startGameTimer();
 
     this._LoadAnimatedModel();
     this._RAF();
@@ -138,6 +142,8 @@ class Game {
   }
 
   _RAF() {
+    if (window.isGamePlaying) {
+
     requestAnimationFrame((t) => {
       if (this._previousRAF === null) {
         this._previousRAF = t;
@@ -150,6 +156,8 @@ class Game {
       this._Step(t - this._previousRAF);
       this._previousRAF = t;
     });
+     }
+
   }
 
   _Step(timeElapsed) {

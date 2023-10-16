@@ -15,7 +15,7 @@ class BasicCharacterControllerProxy {
 class BasicCharacterController {
   constructor(params) {
     this._Init(params);
-
+    this._hasCompleted = false;
   }
 
   _Init(params) {
@@ -87,6 +87,7 @@ class BasicCharacterController {
   }
 
   Update(timeInSeconds) {
+
     if (!this._stateMachine._currentState) {
         return;
     }
@@ -165,11 +166,12 @@ class BasicCharacterController {
         this._position.copy(controlObject.position);
     }
 
-    if (this._isAtDestination()) {
+    if (this._isAtDestination() && !this._hasCompleted) {
         this._stateMachine.SetState('dance');
          const popup = document.getElementById('levelCompletionPopup');
             popup.style.display = 'block';
-        console.log("Completed the maze!");
+            console.log("Completed the maze!");
+            this._hasCompleted = true;
     }
 
     if (this._mixer) {
@@ -179,7 +181,7 @@ class BasicCharacterController {
 
 _isBoundingBoxColliding(box) {
     const center = box.getCenter(new THREE.Vector3());
-    const shrinkFactor = 0.6; 
+    const shrinkFactor = 0.6;
     box.min.lerp(center, shrinkFactor);
     box.max.lerp(center, shrinkFactor);
 

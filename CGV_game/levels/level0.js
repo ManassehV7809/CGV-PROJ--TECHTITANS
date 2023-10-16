@@ -274,6 +274,6 @@ let effects = null;
 
 let startPosition = {x:-(dim/2) + cellSize / 2, y:0.01, z:-(dim/2) + cellSize / 2}
 
-let Level0 = new Level(lights,effects, bg, plane, objects, startPosition);
+let Level0 = new Level(lights,effects, bg, plane, objects, startPosition, 60);
 
 export default Level0;

@@ -31,25 +31,19 @@ window.initGame = function (num){
 
              document.getElementById("in-game-menu").style.display = "block"
 
-    //
-    window._APP = null;
 
    switch (num) {
 
          case 0:
-            window._APP = new Game(Level0);
+            window._APP._Initialize(Level0);
             break;
             case 1:
-            window._APP = new Game(Level1);
+            window._APP._Initialize(Level1);
             break;
             case 2:
-            window._APP = new Game(Level2);
+            window._APP._Initialize(Level2);
             break;
    }
-
-
-
-
 
 }
 

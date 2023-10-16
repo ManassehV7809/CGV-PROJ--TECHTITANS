@@ -8,14 +8,21 @@
         }
 
        window.goBackToMainMenu= function (){
+
+            window.stopGameTimer();
+
             // Hide all submenus and show the main menu
             document.querySelectorAll('.submenu').forEach(function (submenu) {
                 submenu.style.display = 'none';
             });
-            const popup = document.getElementById('levelCompletionPopup');
+            let popup = document.getElementById('levelCompletionPopup');
             popup.style.display = 'none';
-
+            popup = document.getElementById('levelFailPopup');
+            popup.style.display = 'none';
+            popup = document.getElementById('in-game-menu');
+            popup.style.display = 'none';
             document.getElementById('mainMenu').style.display = 'flex';
+
         }
 
          window.startGame = function() {
@@ -38,9 +45,7 @@
         function resumeGame() {
         // Add your code to resume the game later
             console.log('Resuming the game...');
-        // hide the "Resume" button and show the "Pause" button.
-        //     document.querySelector('.heading:contains("Pause")').style.display = 'block';
-        //     document.querySelector('.heading:contains("Resume")').style.display = 'none';
+
         }
         function quitGame() {
             // Add your code to quit the game here
@@ -49,26 +54,52 @@
         }
         
         // Countdown timer logic
-        let totalGameTime = 300; // 5 minutes (300 seconds)
-        let remainingTime = totalGameTime;
+        window.totalGameTime = null;
+        window.remainingTime = window.totalGameTime;
 
         function updateRemainingTime() {
-            remainingTime--;
-            if (remainingTime < 0) {
-                remainingTime = 0;
+            window.remainingTime--;
+            if (window.remainingTime < 0) {
+                window.remainingTime = 0;
             }
 
             // Update the timer display
-            const minutes = Math.floor(remainingTime / 60);
-            const seconds = remainingTime % 60;
+            const minutes = Math.floor(window.remainingTime / 60);
+            const seconds = window.remainingTime % 60;
             document.getElementById('timer').textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
-            if (remainingTime <= 0) {
-                // gameOver(); // Implement your game over logic
+            if (window.remainingTime <= 0) {
+                //implementing game over
+                 window.stopGameTimer();
+                 const popup = document.getElementById('levelFailPopup');
+                popup.style.display = 'block';
             }
         }
 
-        setInterval(updateRemainingTime, 1000); // Update every second
+        window.isGamePlaying = false;
+        window.gameTimer = null;
+
+        window.startGameTimer = function () {
+            window.isGamePlaying = true;
+            window.gameTimer = setInterval(updateRemainingTime, 1000);
+        }
+
+        window.stopGameTimer = function () {
+            window.isGamePlaying = false;
+            clearInterval(window.gameTimer);
+        }
+
+        window.resetGameTimer = function () {
+            window.remainingTime = window.totalGameTime;
+            updateRemainingTime();
+        }
+
+        // Function to show the pause menu
+        function showPauseMenu() {
+            const popup = document.getElementById('pauseMenu');
+            popup.style.display = 'block';
+        }
+
 
         // Function to show the level completion pop-up
         function showLevelCompletionPopup() {

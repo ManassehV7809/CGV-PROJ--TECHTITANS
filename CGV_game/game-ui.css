@@ -4,4 +4,10 @@
     height: 100%;
     color: white;
     z-index: 0;
+
+}
+
+.game-ui:hover{
+    cursor: pointer;
+
 }

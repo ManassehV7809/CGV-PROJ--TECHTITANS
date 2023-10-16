@@ -9,18 +9,19 @@
         z-index: 2;
         bottom: 0;
         right: 0;
-        animation: pip 1s steps(4) infinite;
-        transform-origin: 50% 50%;
-        transform: translate(-10%, -10%);
-        @keyframes pip{
-            0%{
-                background-position: 0 0;
-            }
-            100%{
-                background-position: 0 -400px;
-            }
-        }
+    transition: 0.5s ease-in-out;
+
   }
+
+.pip:hover{
+    opacity: 1;
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: 0.5s ease-in-out;
+     bottom: 10%;
+        right: 10%;
+
+}
 
 .pip-map{
     width: 100%;
