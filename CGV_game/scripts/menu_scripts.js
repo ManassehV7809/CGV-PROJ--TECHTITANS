@@ -107,6 +107,9 @@
         // Function to show the level completion pop-up
         function showLevelCompletionPopup() {
             const popup = document.getElementById('levelCompletionPopup');
+            const losingSound = document.getElementById('losingSound');
+            losingSound.volume = 1.0;
+            losingSound.play();
             popup.style.display = 'block';
         }
         

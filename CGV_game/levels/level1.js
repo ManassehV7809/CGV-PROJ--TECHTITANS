@@ -1,6 +1,7 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
 import Level from "./level_setting.js";
 import { createLavaRock } from '../models/lavarock.js';
+import { createFlag } from '../models/flag.js';
 
 //todo: define lights
 let lights = [];
@@ -260,8 +261,16 @@ plane.rotation.x = -Math.PI / 2;
               placeRandomlavarock(mazeObj)
                   
                 }
+
+              const  flag = createFlag();
+                flag.position.set((dim/2) - cellSize / 2,0.01,(dim/2)-cellSize/2);      
+                    mazeObj.push(flag)
+
+
           
                 mazeWalls.push(...mazeObj);
+
+
           
                     mazeWalls.push(endGround);
 
@@ -284,5 +293,6 @@ plane.rotation.x = -Math.PI / 2;
           let effect = null;
 
 
+   
     let Level1 = new Level(lights, effect, bg, plane, objects, startPosition, 120);
     export default Level1;

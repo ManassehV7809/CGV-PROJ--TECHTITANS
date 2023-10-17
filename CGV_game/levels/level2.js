@@ -2,6 +2,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.mod
 import Level from "./level_setting.js";
 import { createSnowman } from '../models/snowman';
 import {  createLantern } from '../models/lantern.js';
+import { createFlag } from '../models/flag.js';
 
 
 //board dimension
@@ -299,6 +300,12 @@ for(let i = 0; i < 3; i++) {
         placeRandomLanterns(mazeObj)
           }
 
+
+          const  flag = createFlag();
+          flag.position.set((dim/2) - cellSize / 2,0.01,(dim/2)-cellSize/2);      
+              mazeObj.push(flag)
+
+
       mazeWalls.push(...mazeObj);
 
           mazeWalls.push(endGround);
@@ -317,8 +324,11 @@ for(let i = 0; i < 3; i++) {
 
 
           let startPosition = {x:-(dim/2) + cellSize / 2, y:0.01, z:-(dim/2) + cellSize / 2}
+         
 
           let fog = new THREE.FogExp2(0xA7ADD0, 0.0009);
+
+
         
     let Level2 = new Level(lights,null, bg, plane, objects, startPosition, 300);
     export default Level2;
