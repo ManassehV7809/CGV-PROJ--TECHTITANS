@@ -1,7 +1,8 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
+import Ball from "./ball.js";
 
 function createFlag() {
-    const fabricMaterial = new THREE.MeshStandardMaterial({ color: 0x0000FF }); // Blue color for the flag fabric
+    const fabricMaterial = new THREE.MeshStandardMaterial({  }); // Blue color for the flag fabric
     const poleMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 }); // Brown color for the flag pole
 
     // Create the flag pole
@@ -18,11 +19,16 @@ function createFlag() {
     const flag = new THREE.Mesh(flagGeometry, fabricMaterial);
     flag.position.set(2, 4, 0);  // Adjust the flag's position to be on the pole
 
+    //load texture
+        const flagTexture = new THREE.TextureLoader().load('../textures/ball.png');
+        flag.material.map = flagTexture;
+
+
     // Variables for the flag's animation
     let time = 0;
     const speed = 0.1;
-    const wavelength = 5;
-    const amplitude = 0.5;
+    const wavelength = 10;
+    const amplitude = 0.3;
 
     // Create an animation loop to update the flag's vertices over time
     const animateFlag = () => {
