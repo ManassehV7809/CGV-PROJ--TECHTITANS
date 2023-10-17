@@ -2,7 +2,6 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.mod
 
 
 function createSnowman() {
-    
 
 // Base of the snowman
 const base = new THREE.Mesh(

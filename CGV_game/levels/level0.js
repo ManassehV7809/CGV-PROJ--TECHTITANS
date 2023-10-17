@@ -1,5 +1,6 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
 import Level from "./level_setting.js";
+import {createFlagWithStick} from '../models/flag.js';
 
 
 // board dimension
@@ -287,7 +288,16 @@ function drawMaze() {
 generateMaze();
 const mazeObjects = drawMaze();
 
-let objects = [...mazeObjects];
+let flag = createFlagWithStick(
+    (dim/2) - cellSize / 2, 0.01, (dim/2) - cellSize / 2 // Position
+);
+
+
+let objects = [];
+objects.push(flag);
+ objects = [...mazeObjects];
+
+
 
 let effects = null;
 
