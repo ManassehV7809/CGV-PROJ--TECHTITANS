@@ -131,6 +131,13 @@
             showLevelCompletionPopup();
         }
 
+document.addEventListener("keydown", function(event) {
+          if (event.key === "p" || event.key === "P") {
+            // Your code to execute when the "P" key is pressed on the keyboard
+            alert("P key was pressed on the keyboard!");
+          }
+        });
+
 
 
 

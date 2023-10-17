@@ -256,7 +256,7 @@ plane.rotation.x = -Math.PI / 2;
 
           mazeWalls.push(startGround);
           let  mazeObj=[]
-          for(let i = 0; i < 20; i++) {
+          for(let i = 0; i < 12; i++) {
               placeRandomlavarock(mazeObj)
                   
                 }
@@ -264,12 +264,7 @@ plane.rotation.x = -Math.PI / 2;
                 mazeWalls.push(...mazeObj);
           
                     mazeWalls.push(endGround);
-          
 
-        
-            
-          
-          
                     return mazeWalls;
                 }
           
