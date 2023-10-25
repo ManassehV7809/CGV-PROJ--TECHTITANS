@@ -18,6 +18,7 @@ window.gameState = {
     _currentLevel: 0,
     score: 0,
     lives: 3,
+    currentCamera:0
 }
 
 window.real = false;
@@ -89,7 +90,23 @@ window.restartGame = function (){
 }
 
 
+
+ window.switchCam = function (){ window._APP._thirdPersonCamera._switchCamera();}
+
+
 window.addEventListener('DOMContentLoaded', () => {
     window._APP = new Game(mock,250, );
+
+    // Add an event listener to the document
+document.addEventListener('keydown', function(event) {
+  // Check if the key pressed is the "1" key
+  if (event.key === '1') {
+    // Execute your code here
+    console.log('The "1" key was pressed.');
+    window.switchCam();
+    // Replace the above line with your desired code to be executed.
+  }
+});
+
 });
 

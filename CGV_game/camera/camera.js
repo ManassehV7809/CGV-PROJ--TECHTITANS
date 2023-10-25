@@ -7,10 +7,18 @@ class ThirdPersonCamera {
 
     this._currentPosition = new THREE.Vector3();
     this._currentLookat = new THREE.Vector3();
+    this.idealOffsets = [new THREE.Vector3(0, 15, 9), new THREE.Vector3(-15, 20, -30)];
+    this.currentCamera = 0;
   }
 
+  _switchCamera() {
+    console.log("switching camera...");
+    this.currentCamera = (this.currentCamera + 1) % 2;
+  }
+
+
   _CalculateIdealOffset() {
-    const idealOffset = new THREE.Vector3(-15, 20, -30);
+     const idealOffset = this.idealOffsets[this.currentCamera].clone();
     idealOffset.applyQuaternion(this._params.target.Rotation);
     idealOffset.add(this._params.target.Position);
     return idealOffset;
