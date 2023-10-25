@@ -22,7 +22,7 @@ window.gameState = {
 }
 
 window.real = false;
-
+// sound effects
 window.singletons={
 
     audio: audio,
@@ -66,7 +66,7 @@ window.initGame = function (num){
    }
 
 }
-
+// restart button
 window.restartGame = function (){
     window.stopGameTimer();
     let popup = document.getElementById('levelFailPopup');
@@ -89,7 +89,7 @@ window.restartGame = function (){
 
 }
 
-
+// third person camera
 
  window.switchCam = function (){ window._APP._thirdPersonCamera._switchCamera();}
 
