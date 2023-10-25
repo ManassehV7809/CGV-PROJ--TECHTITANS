@@ -75,6 +75,8 @@ window.restartGame = function (){
     popup.style.display = 'none';
      popup = document.getElementById('mainMenu');
     popup.style.display = 'none';
+    const submenu = document.getElementById('submenuPause');
+    submenu.style.display = 'none';
     switch (window.gameState._currentLevel) {
         case 0:
             window._APP._Initialize(Level0,250);

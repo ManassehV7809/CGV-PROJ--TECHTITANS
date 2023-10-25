@@ -8,7 +8,7 @@ class ThirdPersonCamera {
     this._currentPosition = new THREE.Vector3();
     this._currentLookat = new THREE.Vector3();
     this.idealOffsets = [new THREE.Vector3(0, 15, 9), new THREE.Vector3(-15, 20, -30)];
-    this.currentCamera = 0;
+    this.currentCamera = 1;
   }
 
   _switchCamera() {
