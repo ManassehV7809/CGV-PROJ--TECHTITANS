@@ -89,6 +89,11 @@
             color: white;
             font-size: 20px;
             font-weight: bold;
+            padding: 10px;
+        }
+
+        .game-ui .timer{
+           font-size: 40px;
         }
 
         .popup {
@@ -124,3 +129,31 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+
+
+  @keyframes heartbeat {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+
+        .title{
+             animation: heartbeat 7s infinite;
+            font-size: 100px;
+            font-weight: bold;
+        /*    linear gradient color*/
+            background: -webkit-linear-gradient(#eee, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            user-select: none;
+
+        }
+

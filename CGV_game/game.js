@@ -38,8 +38,6 @@ class Game {
     this._camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight, 0.1, 1000);
     this._camera.position.set(25, 10, 25);
 
-
-
     //todo: setting up a scene
     this._scene = new THREE.Scene();
 
@@ -63,6 +61,7 @@ class Game {
 
     window.totalGameTime = this._level.time; // 5 minutes (300 seconds)
     window.remainingTime = window.totalGameTime;
+
 
     window.startGameTimer();
 

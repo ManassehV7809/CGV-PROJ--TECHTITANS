@@ -33,7 +33,7 @@
         // hide the menu and show the game
              document.getElementById('mainMenu').style.display = 'none';
               window.stopGameTimer();
-             window.initGame(0);
+                window.initGame(0);
 
         }
         function pauseGame() {
@@ -83,6 +83,7 @@
         window.gameTimer = null;
 
         window.startGameTimer = function () {
+
             window.isGamePlaying = true;
             window.gameTimer = setInterval(updateRemainingTime, 1000);
         }

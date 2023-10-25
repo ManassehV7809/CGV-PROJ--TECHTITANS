@@ -3,10 +3,11 @@ import {Game} from "./game.js";
 import Level1 from "./levels/level1.js";
 import Level0 from "./levels/level0.js";
 import Level2 from "./levels/level2.js";
+import mock from "./levels/mock.js";
 
 // Get a reference to the audio element
 const audio = document.getElementById("myAudio");
-audio.volume = 0.01;
+audio.volume = 0.05;
 
 const menu = document.getElementById("in-game-menu");
 menu.style.display = "none";
@@ -18,6 +19,8 @@ window.gameState = {
     score: 0,
     lives: 3,
 }
+
+window.real = false;
 
 window.singletons={
 
@@ -87,6 +90,6 @@ window.restartGame = function (){
 
 
 window.addEventListener('DOMContentLoaded', () => {
-   window._APP = new Game(Level0,250);
+    window._APP = new Game(mock,250, );
 });
 
