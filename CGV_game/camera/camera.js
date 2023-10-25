@@ -50,6 +50,8 @@ class FirstPersonCamera {
   }
 
 
+
+
 }
 
 export {ThirdPersonCamera, FirstPersonCamera};

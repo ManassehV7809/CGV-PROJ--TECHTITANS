@@ -44,7 +44,16 @@ lights.push(light1);
 
 
     //todo: define background
-    let bg = new THREE.TextureLoader().load('../images/red day.jpg');
+    const loader = new THREE.CubeTextureLoader();
+    const bg = loader.load([
+        './resources/posx.jpg',
+        './resources/negx.jpg',
+        './resources/posy.jpg',
+        './resources/negy.jpg',
+        './resources/posz.jpg',
+        './resources/negz.jpg',
+    ]);
+    bg.encoding = THREE.sRGBEncoding;
 
     const dim = 500;
 

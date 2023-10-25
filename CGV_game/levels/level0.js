@@ -85,8 +85,24 @@ for (let config of pointLightConfigs) {
    }
 
 // Define background
-let bg = new THREE.TextureLoader().load('../images/moon.jpg');
 
+const loader = new THREE.CubeTextureLoader();
+const bg = loader.load([
+  './images/sky_box_energy/right.JPG', './images/sky_box_energy/left.JPG',
+  './images/sky_box_energy/up.JPG', './images/sky_box_energy/down.JPG',
+  './images/sky_box_energy/front.JPG', './images/sky_box_energy/back.JPG'
+]);
+
+// const loader = new THREE.CubeTextureLoader();
+//     const bg = loader.load([
+//         './resources/posx.jpg',
+//         './resources/negx.jpg',
+//         './resources/posy.jpg',
+//         './resources/negy.jpg',
+//         './resources/posz.jpg',
+//         './resources/negz.jpg',
+//     ]);
+    bg.encoding = THREE.sRGBEncoding;
 
 
 const plane = new THREE.Mesh(

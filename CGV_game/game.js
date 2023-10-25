@@ -109,6 +109,8 @@ class Game {
       camera: this._camera,
       target: this._controls,
     });
+
+
   }
 
   _OnWindowResize() {

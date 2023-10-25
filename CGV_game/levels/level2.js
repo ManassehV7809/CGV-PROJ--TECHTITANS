@@ -44,7 +44,16 @@ lights.push(ambientLight);
     
 
     //todo: define background
-    let bg = new THREE.TextureLoader().load('../images/space.jpg');
+    const loader = new THREE.CubeTextureLoader();
+    const bg = loader.load([
+        './resources/posx.jpg',
+        './resources/negx.jpg',
+        './resources/posy.jpg',
+        './resources/negy.jpg',
+        './resources/posz.jpg',
+        './resources/negz.jpg',
+    ]);
+    bg.encoding = THREE.sRGBEncoding;
 
 
     //todo: define ground
