@@ -18,10 +18,11 @@ window.gameState = {
     _currentLevel: 0,
     score: 0,
     lives: 3,
+    currentCamera:0
 }
 
 window.real = false;
-
+// sound effects
 window.singletons={
 
     audio: audio,
@@ -65,7 +66,7 @@ window.initGame = function (num){
    }
 
 }
-
+// restart button
 window.restartGame = function (){
     window.stopGameTimer();
     let popup = document.getElementById('levelFailPopup');
@@ -74,6 +75,8 @@ window.restartGame = function (){
     popup.style.display = 'none';
      popup = document.getElementById('mainMenu');
     popup.style.display = 'none';
+    const submenu = document.getElementById('submenuPause');
+    submenu.style.display = 'none';
     switch (window.gameState._currentLevel) {
         case 0:
             window._APP._Initialize(Level0,250);
@@ -88,8 +91,24 @@ window.restartGame = function (){
 
 }
 
+// third person camera
+
+ window.switchCam = function (){ window._APP._thirdPersonCamera._switchCamera();}
+
 
 window.addEventListener('DOMContentLoaded', () => {
     window._APP = new Game(mock,250, );
+
+    // Add an event listener to the document
+document.addEventListener('keydown', function(event) {
+  // Check if the key pressed is the "1" key
+  if (event.key === '1') {
+    // Execute your code here
+    console.log('The "1" key was pressed.');
+    window.switchCam();
+    // Replace the above line with your desired code to be executed.
+  }
+});
+
 });
 

@@ -21,7 +21,6 @@ light.shadow.camera.left = 50;
 light.shadow.camera.right = -50;
 light.shadow.camera.top = 50;
 light.shadow.camera.bottom = -50;
-
 lights.push(light);
 
 // Ambient light
@@ -39,9 +38,6 @@ light1.shadow.camera.near = 0.1;
 light1.shadow.camera.far = 1000.0;
 
 lights.push(light1);
-
-
-
 
     //todo: define background
     const loader = new THREE.CubeTextureLoader();

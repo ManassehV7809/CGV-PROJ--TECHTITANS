@@ -90,10 +90,41 @@
             font-size: 20px;
             font-weight: bold;
             padding: 10px;
+            height: 100vh;
+            width: 100vw;
         }
 
         .game-ui .timer{
            font-size: 40px;
+        }
+
+        .game-ui .topBar{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .game-ui .topBar .pause-btn {
+            background-color: #007acc;
+            color: white;
+            font-size: 21px;
+            font-weight: normal;
+            transform: translateX(-100%);
+            border-radius: 5px;
+            border: none;
+            padding: 10px;
+            align-items: center;
+            transition: 0.2s ease-in;
+        }
+
+        .game-ui .topBar .pause-btn:hover {
+
+            transform: translateX(-100%) scale(1.1);
+            background-color: green;
+            transition: 0.2s ease-in;
+
         }
 
         .popup {
