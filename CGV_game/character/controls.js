@@ -85,118 +85,164 @@ class BasicCharacterController {
         }
         return this._target.quaternion;
     }
-
     Update(timeInSeconds) {
-        if (!this._stateMachine._currentState) {
-            return;
-        }
+      if (!this._stateMachine._currentState) {
+          return;
+      }
+  
+      this._stateMachine.Update(timeInSeconds, this._input);
+  
+      const velocity = this._velocity;
+      const frameDecceleration = new THREE.Vector3(
+          velocity.x * this._decceleration.x,
+          velocity.y * this._decceleration.y,
+          velocity.z * this._decceleration.z
+      );
+      frameDecceleration.multiplyScalar(timeInSeconds);
+      frameDecceleration.z = Math.sign(frameDecceleration.z) * Math.min(
+          Math.abs(frameDecceleration.z), Math.abs(velocity.z)
+      );
+  
+      velocity.add(frameDecceleration);
+  
+      const controlObject = this._target;
+      const _Q = new THREE.Quaternion();
+      const _A = new THREE.Vector3();
+      const _R = controlObject.quaternion.clone();
+  
+      const acc = this._acceleration.clone();
+      if (this._input._keys.shift) {
+          acc.multiplyScalar(2.0);
+      }
+  
+      if (this._stateMachine._currentState.Name === 'dance') {
+          acc.multiplyScalar(0.0);
+      }
+  
+      if (this._input._keys.forward) {
+          velocity.z += acc.z * timeInSeconds;
+      }
+      if (this._input._keys.backward) {
+          velocity.z -= acc.z * timeInSeconds;
+      }
+      if (this._input._keys.left) {
+          _A.set(0, 1, 0);
+          _Q.setFromAxisAngle(_A, 4.0 * Math.PI * timeInSeconds * this._acceleration.y);
+          _R.multiply(_Q);
+      }
+      if (this._input._keys.right) {
+          _A.set(0, 1, 0);
+          _Q.setFromAxisAngle(_A, 4.0 * -Math.PI * timeInSeconds * this._acceleration.y);
+          _R.multiply(_Q);
+      }
+  
+      controlObject.quaternion.copy(_R);
+  
+      const forward = new THREE.Vector3(0, 0, 1);
+      forward.applyQuaternion(controlObject.quaternion);
+      forward.normalize();
+  
+      const sideways = new THREE.Vector3(1, 0, 0);
+      sideways.applyQuaternion(controlObject.quaternion);
+      sideways.normalize();
+  
+      sideways.multiplyScalar(velocity.x * timeInSeconds);
+      forward.multiplyScalar(velocity.z * timeInSeconds);
+  
+      const potentialPosition = controlObject.position.clone().add(forward).add(sideways);
+      
+      
+      const characterBox = new THREE.Box3().setFromObject(this._target);
+      const translation = potentialPosition.clone().sub(controlObject.position);
+      characterBox.min.add(translation);
+      characterBox.max.add(translation);
+  
+      const collidedWithWorldObject = this._isBoundingBoxColliding(characterBox);
+  
+      let collidedWithCoin = false;
+      if (this._controls || true) { // Change this condition if you always want to check for coin collisions
+          this._controls?.Update(timeInSeconds); // The '?' is the optional chaining operator in JavaScript. 
+          collidedWithCoin = this._isBoundingBoxColliding(characterBox, true);
+      }
+  
+      if (!collidedWithWorldObject && !collidedWithCoin) {
+          controlObject.position.copy(potentialPosition);
+          this._position.copy(controlObject.position);
+      }
+  
+      if (this._isAtDestination() && !this._hasCompleted) {
+          this._stateMachine.SetState('dance');
+          const popup = document.getElementById('levelCompletionPopup');
+          const CompletionSound = document.getElementById('CompletionSound');
+          CompletionSound.volume = 1.0;
+          CompletionSound.play();
+          popup.style.display = 'block';
+          console.log("Completed the maze!");
+          window.remainingTime = 6000;
+          this._hasCompleted = true;
+      }
+  
+      if (this._mixer) {
+          this._mixer.update(timeInSeconds);
+      }
+  }
+  
 
-        this._stateMachine.Update(timeInSeconds, this._input);
-
-        const velocity = this._velocity;
-        const frameDecceleration = new THREE.Vector3(
-            velocity.x * this._decceleration.x,
-            velocity.y * this._decceleration.y,
-            velocity.z * this._decceleration.z
-        );
-        frameDecceleration.multiplyScalar(timeInSeconds);
-        frameDecceleration.z = Math.sign(frameDecceleration.z) * Math.min(
-            Math.abs(frameDecceleration.z), Math.abs(velocity.z)
-        );
-
-        velocity.add(frameDecceleration);
-
-        const controlObject = this._target;
-        const _Q = new THREE.Quaternion();
-        const _A = new THREE.Vector3();
-        const _R = controlObject.quaternion.clone();
-
-        const acc = this._acceleration.clone();
-        if (this._input._keys.shift) {
-            acc.multiplyScalar(2.0);
-        }
-
-        if (this._stateMachine._currentState.Name === 'dance') {
-            acc.multiplyScalar(0.0);
-        }
-
-        if (this._input._keys.forward) {
-            velocity.z += acc.z * timeInSeconds;
-        }
-        if (this._input._keys.backward) {
-            velocity.z -= acc.z * timeInSeconds;
-        }
-        if (this._input._keys.left) {
-            _A.set(0, 1, 0);
-            _Q.setFromAxisAngle(_A, 4.0 * Math.PI * timeInSeconds * this._acceleration.y);
-            _R.multiply(_Q);
-        }
-        if (this._input._keys.right) {
-            _A.set(0, 1, 0);
-            _Q.setFromAxisAngle(_A, 4.0 * -Math.PI * timeInSeconds * this._acceleration.y);
-            _R.multiply(_Q);
-        }
-
-        controlObject.quaternion.copy(_R);
-
-        const forward = new THREE.Vector3(0, 0, 1);
-        forward.applyQuaternion(controlObject.quaternion);
-        forward.normalize();
-
-        const sideways = new THREE.Vector3(1, 0, 0);
-        sideways.applyQuaternion(controlObject.quaternion);
-        sideways.normalize();
-
-        sideways.multiplyScalar(velocity.x * timeInSeconds);
-        forward.multiplyScalar(velocity.z * timeInSeconds);
-
-        const potentialPosition = controlObject.position.clone().add(forward).add(sideways);
-        const characterBox = new THREE.Box3().setFromObject(this._target);
-        const translation = potentialPosition.clone().sub(controlObject.position);
-        characterBox.min.add(translation);
-        characterBox.max.add(translation);
-
-        if (!this._isBoundingBoxColliding(characterBox)) {
-            controlObject.position.copy(potentialPosition);
-            this._position.copy(controlObject.position);
-        }
-
-        if (this._isAtDestination() && !this._hasCompleted) {
-            this._stateMachine.SetState('dance');
-            const popup = document.getElementById('levelCompletionPopup');
-            const CompletionSound = document.getElementById('CompletionSound');
-            CompletionSound.volume = 1.0;
-            CompletionSound.play();
-            popup.style.display = 'block';
-            console.log("Completed the maze!");
-            window.remainingTime = 6000;
-            this._hasCompleted = true;
-        }
-
-        if (this._mixer) {
-            this._mixer.update(timeInSeconds);
-        }
-    }
-
-    _isBoundingBoxColliding(box) {
-        const center = box.getCenter(new THREE.Vector3());
-        const shrinkFactor = 0.6;
-        box.min.lerp(center, shrinkFactor);
-        box.max.lerp(center, shrinkFactor);
-
-        for (let obj of this._world.objects) {
-            const objBox = new THREE.Box3().setFromObject(obj);
-            if (box.intersectsBox(objBox)) {
+    _isBoundingBoxColliding(box, checkCoins = false) {
+      const center = box.getCenter(new THREE.Vector3());
+      const shrinkFactor = 0.6;
+      box.min.lerp(center, shrinkFactor);
+      box.max.lerp(center, shrinkFactor);
+  
+      for (let obj of this._world.objects) {
+          const objBox = new THREE.Box3().setFromObject(obj);
+          if (box.intersectsBox(objBox)) {
               const crashSound = document.getElementById('crashSound');
-            crashSound.volume = 1.0;
-            crashSound.play();
-                return true;
+              crashSound.volume = 1.0;
+              crashSound.play();
+              return true;
+          }
+      }
 
+
+  
+      if(checkCoins){
+          for (let coin of this._world.coinsSpeed) {
+              const coinBox = new THREE.Box3().setFromObject(coin);
+              if (box.intersectsBox(coinBox)) {
+                  this._ActivatePowerUp(coin);
+                  return true; 
+              }
+          }
+          for (let coin of this._world.coinsTime) {
+            const coinBox = new THREE.Box3().setFromObject(coin);
+            if (box.intersectsBox(coinBox)) {
+                this._addExtraTime(coin);
+                return true; 
             }
         }
 
-        return false;
-    }
+
+      }
+
+      
+      return false;
+  }
+
+  _addExtraTime(coin) {
+    this._params.scene.remove(coin);
+    window.remainingTime += 2.5;
+    }
+
+  _ActivatePowerUp(coin) {
+    this._params.scene.remove(coin);
+    
+   //activate speed boost
+   this._activateSpeedBoost();
+    
+ 
+}
+
 
     _isAtDestination() {
         const distance = this._position.distanceTo(this._world.objects[this._world.objects.length - 1].position);

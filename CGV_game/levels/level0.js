@@ -221,21 +221,28 @@ const end = {x: (dim/2) - cellSize / 2, z: (dim/2) - cellSize / 2};
 function positionCollidesWithStartOrEnd(x, z, start, end) {
   return (x === start.x && z === start.z) || (x === end.x && z === end.z);
 }
-function placeRandomCoins(objects) {
-    const coinsR = createCoin();
+function placeRandomCoins(speedCoins, timeCoins) {
+    const coin = createCoin();  // This function should now randomly determine the type of the coin
 
     // Calculate random position inside the maze
-    let x = Math.floor(Math.random() * rows) * cellSize - (dim/2) + cellSize / 2;
-    let z = Math.floor(Math.random() * cols) * cellSize - (dim/2) + cellSize / 2;
+    let x = Math.floor(Math.random() * rows) * cellSize - (dim / 2) + cellSize / 2;
+    let z = Math.floor(Math.random() * cols) * cellSize - (dim / 2) + cellSize / 2;
 
     while (positionCollidesWithStartOrEnd(x, z, start, end)) {
-        x = Math.floor(Math.random() * rows) * cellSize - (dim/2) + cellSize / 2;
-        z = Math.floor(Math.random() * cols) * cellSize - (dim/2) + cellSize / 2;
+        x = Math.floor(Math.random() * rows) * cellSize - (dim / 2) + cellSize / 2;
+        z = Math.floor(Math.random() * cols) * cellSize - (dim / 2) + cellSize / 2;
     }
 
-    coinsR.position.set(x, 7, z);
-    objects.push(coinsR);
+    coin.position.set(x, 7, z);
+
+    // Add the coin to the appropriate array based on its type
+    if (coin.coinType === 'speedBoost') {
+        speedCoins.push(coin);
+    } else if (coin.coinType === 'timeIncrease') {
+        timeCoins.push(coin);
+    }
 }
+
 
 
 function drawMaze() {
@@ -326,9 +333,11 @@ function drawMaze() {
 generateMaze();
 const mazeObjects = drawMaze();
 
-let coins=[];
-for(let i = 0; i < 12; i++) {
-  placeRandomCoins(coins)
+let coinsSpeed=[];
+let coinsTime=[];
+
+for(let i = 0; i < 3; i++) {
+  placeRandomCoins(coinsSpeed,coinsTime)
     }
 let objects = [...mazeObjects];
 
@@ -339,6 +348,6 @@ let effects = null;
 let startPosition = {x:-(dim/2) + cellSize / 2, y:0.01, z:-(dim/2) + cellSize / 2}
 
 
-let Level0 = new Level(lights,effects, bg, plane, objects,coins, startPosition, 45);
+let Level0 = new Level(lights,effects, bg, plane, objects,coinsSpeed, coinsTime, startPosition, 45);
 
 export default Level0;

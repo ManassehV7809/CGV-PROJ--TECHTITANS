@@ -197,21 +197,27 @@ plane.rotation.x = -Math.PI / 2;
         objects.push(lavarock);
     }
 
-function placeRandomCoins(objects) {
-    const coinsR = createCoin();
-
-    // Calculate random position inside the maze
-    let x = Math.floor(Math.random() * rows) * cellSize - (dim/2) + cellSize / 2;
-    let z = Math.floor(Math.random() * cols) * cellSize - (dim/2) + cellSize / 2;
-
-    while (positionCollidesWithStartOrEnd(x, z, start, end)) {
-        x = Math.floor(Math.random() * rows) * cellSize - (dim/2) + cellSize / 2;
-        z = Math.floor(Math.random() * cols) * cellSize - (dim/2) + cellSize / 2;
+    function placeRandomCoins(speedCoins, timeCoins) {
+        const coin = createCoin();  // This function should now randomly determine the type of the coin
+    
+        // Calculate random position inside the maze
+        let x = Math.floor(Math.random() * rows) * cellSize - (dim / 2) + cellSize / 2;
+        let z = Math.floor(Math.random() * cols) * cellSize - (dim / 2) + cellSize / 2;
+    
+        while (positionCollidesWithStartOrEnd(x, z, start, end)) {
+            x = Math.floor(Math.random() * rows) * cellSize - (dim / 2) + cellSize / 2;
+            z = Math.floor(Math.random() * cols) * cellSize - (dim / 2) + cellSize / 2;
+        }
+    
+        coin.position.set(x, 7, z);
+    
+        // Add the coin to the appropriate array based on its type
+        if (coin.coinType === 'speedBoost') {
+            speedCoins.push(coin);
+        } else if (coin.coinType === 'timeIncrease') {
+            timeCoins.push(coin);
+        }
     }
-
-    coinsR.position.set(x, 7, z);
-    objects.push(coinsR);
-}
 
      
     
@@ -306,10 +312,12 @@ function placeRandomCoins(objects) {
       generateMaze();
       const mazeObjects = drawMaze();
 
-      let coins=[];
-for(let i = 0; i < 12; i++) {
-  placeRandomCoins(coins)
-    }
+      let coinsSpeed=[];
+      let coinsTime=[];
+      
+      for(let i = 0; i < 5; i++) {
+        placeRandomCoins(coinsSpeed,coinsTime)
+          }
 
       let objects = [...mazeObjects];
 
@@ -321,5 +329,5 @@ for(let i = 0; i < 12; i++) {
 
 
    
-    let Level1 = new Level(lights, effect, bg, plane, objects,coins, startPosition, 120);
+    let Level1 = new Level(lights, effect, bg, plane, objects,coinsSpeed, coinsTime, startPosition, 120);
     export default Level1;
