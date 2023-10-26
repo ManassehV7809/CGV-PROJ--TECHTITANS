@@ -2,6 +2,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.mod
 import Level from "./level_setting.js";
 import { createLavaRock } from '../models/lavarock.js';
 import { createFlag } from '../models/flag.js';
+import {createCoin} from '../models/coins.js';
 
 //todo: define lights
 let lights = [];
@@ -196,6 +197,22 @@ plane.rotation.x = -Math.PI / 2;
         objects.push(lavarock);
     }
 
+function placeRandomCoins(objects) {
+    const coinsR = createCoin();
+
+    // Calculate random position inside the maze
+    let x = Math.floor(Math.random() * rows) * cellSize - (dim/2) + cellSize / 2;
+    let z = Math.floor(Math.random() * cols) * cellSize - (dim/2) + cellSize / 2;
+
+    while (positionCollidesWithStartOrEnd(x, z, start, end)) {
+        x = Math.floor(Math.random() * rows) * cellSize - (dim/2) + cellSize / 2;
+        z = Math.floor(Math.random() * cols) * cellSize - (dim/2) + cellSize / 2;
+    }
+
+    coinsR.position.set(x, 7, z);
+    objects.push(coinsR);
+}
+
      
     
 
@@ -289,6 +306,11 @@ plane.rotation.x = -Math.PI / 2;
       generateMaze();
       const mazeObjects = drawMaze();
 
+      let coins=[];
+for(let i = 0; i < 12; i++) {
+  placeRandomCoins(coins)
+    }
+
       let objects = [...mazeObjects];
 
 
@@ -299,5 +321,5 @@ plane.rotation.x = -Math.PI / 2;
 
 
    
-    let Level1 = new Level(lights, effect, bg, plane, objects, startPosition, 120);
+    let Level1 = new Level(lights, effect, bg, plane, objects,coins, startPosition, 120);
     export default Level1;

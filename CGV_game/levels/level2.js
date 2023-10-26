@@ -3,6 +3,7 @@ import Level from "./level_setting.js";
 import { createSnowman } from '../models/snowman';
 import {  createLantern } from '../models/lantern.js';
 import { createFlag } from '../models/flag.js';
+import { createCoin } from '../models/coins.js';
 
 
 //board dimension
@@ -232,6 +233,21 @@ lights.push(ambientLight);
         objects.push(lanternLight);
         objects.push(lantern);
     }
+    function placeRandomCoins(objects) {
+        const coinsR = createCoin();
+    
+        // Calculate random position inside the maze
+        let x = Math.floor(Math.random() * rows) * cellSize - (dim/2) + cellSize / 2;
+        let z = Math.floor(Math.random() * cols) * cellSize - (dim/2) + cellSize / 2;
+    
+        while (positionCollidesWithStartOrEnd(x, z, start, end)) {
+            x = Math.floor(Math.random() * rows) * cellSize - (dim/2) + cellSize / 2;
+            z = Math.floor(Math.random() * cols) * cellSize - (dim/2) + cellSize / 2;
+        }
+    
+        coinsR.position.set(x, 7, z);
+        objects.push(coinsR);
+    }
     
     
 
@@ -328,6 +344,10 @@ for(let i = 0; i < 3; i++) {
 
       generateMaze();
       const mazeObjects = drawMaze();
+      let coins=[];
+      for(let i = 0; i < 12; i++) {
+        placeRandomCoins(coins)
+          }
 
       let objects = [...mazeObjects];
 
@@ -339,5 +359,5 @@ for(let i = 0; i < 3; i++) {
 
 
         
-    let Level2 = new Level(lights,null, bg, plane, objects, startPosition, 300);
+    let Level2 = new Level(lights,null, bg, plane, objects,coins, startPosition, 300);
     export default Level2;

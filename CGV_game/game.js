@@ -88,6 +88,9 @@ class Game {
         for(let i = 0; i < level.objects.length; i++){
             this._scene.add(level.objects[i]);
         }
+        for(let i = 0; i < level.coins.length; i++){
+          this._scene.add(level.coins[i]);
+      }
 
          // Set the fog for the scene
     this._scene.fog = level.effects;
