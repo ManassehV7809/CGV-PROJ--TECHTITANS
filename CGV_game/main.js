@@ -28,6 +28,7 @@ window.singletons={
     audio: audio,
     _footSteps: new Audio('./music/walkSound.mp3'),
     _run: new Audio('./music/runningSound.mp3'),
+    _losingSound: new Audio('./music/losingSound.mp3'),
 }
 
 
