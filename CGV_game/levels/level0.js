@@ -87,22 +87,15 @@ for (let config of pointLightConfigs) {
 
 // Define background
 
-const loader = new THREE.CubeTextureLoader();
-const bg = loader.load([
-  '../images/sky_box_0/r.avif', '../images/sky_box_0/l.avif',
-  '../images/sky_box_0/u.avif', '../images/sky_box_0/d.avif',
-  '../images/sky_box_0/f.avif', '../images/sky_box_0/b.avif'
-]);
-
-// const loader = new THREE.CubeTextureLoader();
-//     const bg = loader.load([
-//         './resources/posx.jpg',
-//         './resources/negx.jpg',
-//         './resources/posy.jpg',
-//         './resources/negy.jpg',
-//         './resources/posz.jpg',
-//         './resources/negz.jpg',
-//     ]);
+    const loader = new THREE.CubeTextureLoader();
+    const bg = loader.load([
+        './images/sky_box_night/right.png',
+        './images/sky_box_night/left.png',
+        './images/sky_box_night/top.png',
+        './images/sky_box_night/down.png',
+        './images/sky_box_night/front.png',
+        './images/sky_box_night/back.png',
+    ]);
     bg.encoding = THREE.sRGBEncoding;
 
 

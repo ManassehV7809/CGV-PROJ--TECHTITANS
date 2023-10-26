@@ -45,7 +45,7 @@
     <div id="in-game-menu" class="game-ui">
         <div class="topBar">
             <div class="timer" id="timer"><i class="fas fa-camera"></i> Time: 5:00</div>
-            <button onclick="openSubMenu('submenuPause')"  class="pause-btn">pause</button>
+            <button onclick="pauseGame()"  class="pause-btn">pause</button>
         </div>
 
 
@@ -105,7 +105,7 @@
 
     <!-- Submenu for Pause -->
     <div class="submenu" id="submenuPause">
-         <h2 class="heading" onclick="initGame(1)">Resume</h2>
+         <h2 class="heading" onclick="resumeGame()">Resume</h2>
         <h2 class="heading" onclick="restartGame()">Restart</h2>
         <h2 class="heading" onclick="goBackToMainMenu()">Quit</h2>
     </div>

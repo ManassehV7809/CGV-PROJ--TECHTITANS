@@ -43,14 +43,14 @@ lights.push(light1);
     //todo: define background
     const loader = new THREE.CubeTextureLoader();
     const bg = loader.load([
-        './resources/posx.jpg',
-        './resources/negx.jpg',
-        './resources/posy.jpg',
-        './resources/negy.jpg',
-        './resources/posz.jpg',
-        './resources/negz.jpg',
+        './images/sky_box_volcano/right.jpg',
+        './images/sky_box_volcano/left.jpg',
+        './images/sky_box_volcano/top.jpg',
+        './images/sky_box_volcano/down.jpg',
+        './images/sky_box_volcano/front.jpg',
+        './images/sky_box_volcano/back.jpg',
     ]);
-    bg.encoding = THREE.sRGBEncoding;
+    bg.encoding = THREE.sRGBEncoding;;
 
     const dim = 500;
 

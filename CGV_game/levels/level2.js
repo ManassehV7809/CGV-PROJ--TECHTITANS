@@ -47,12 +47,12 @@ lights.push(ambientLight);
     //todo: define background
     const loader = new THREE.CubeTextureLoader();
     const bg = loader.load([
-        './resources/posx.jpg',
-        './resources/negx.jpg',
-        './resources/posy.jpg',
-        './resources/negy.jpg',
-        './resources/posz.jpg',
-        './resources/negz.jpg',
+        './images/sky_box_snow/right.jpg',
+        './images/sky_box_snow/left.jpg',
+        './images/sky_box_snow/top.jpg',
+        './images/sky_box_snow/down.jpg',
+        './images/sky_box_snow/front.jpg',
+        './images/sky_box_snow/back.jpg',
     ]);
     bg.encoding = THREE.sRGBEncoding;
 

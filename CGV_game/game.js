@@ -6,7 +6,6 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.mod
 class Game {
   isPaused = true;
 
-
   constructor(thing,height) {
 
     this._Initialize(thing,height);
@@ -123,7 +122,6 @@ class Game {
   }
 
   _RAF() {
-    if (window.isGamePlaying) {
 
     requestAnimationFrame((t) => {
       if (this._previousRAF === null) {
@@ -137,22 +135,24 @@ class Game {
       this._Step(t - this._previousRAF);
       this._previousRAF = t;
     });
-     }
+
 
   }
 
   _Step(timeElapsed) {
-    const timeElapsedS = timeElapsed * 0.001;
-    if (this._mixers) {
-      this._mixers.map(m => m.update(timeElapsedS));
-    }
+      if(window.isGamePlaying) {
+          const timeElapsedS = timeElapsed * 0.001;
+          if (this._mixers) {
+              this._mixers.map(m => m.update(timeElapsedS));
+          }
 
-    if (this._controls) {
-      this._controls.Update(timeElapsedS);
+          if (this._controls) {
+              this._controls.Update(timeElapsedS);
 
-    }
+          }
 
-    this._thirdPersonCamera.Update(timeElapsedS);
+          this._thirdPersonCamera.Update(timeElapsedS);
+      }
   }
 
    cleanup() {
