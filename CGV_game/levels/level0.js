@@ -89,9 +89,9 @@ for (let config of pointLightConfigs) {
 
 const loader = new THREE.CubeTextureLoader();
 const bg = loader.load([
-  './images/sky_box_energy/right.JPG', './images/sky_box_energy/left.JPG',
-  './images/sky_box_energy/up.JPG', './images/sky_box_energy/down.JPG',
-  './images/sky_box_energy/front.JPG', './images/sky_box_energy/back.JPG'
+  '../images/sky_box_0/r.avif', '../images/sky_box_0/l.avif',
+  '../images/sky_box_0/u.avif', '../images/sky_box_0/d.avif',
+  '../images/sky_box_0/f.avif', '../images/sky_box_0/b.avif'
 ]);
 
 // const loader = new THREE.CubeTextureLoader();
