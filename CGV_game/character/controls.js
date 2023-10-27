@@ -33,9 +33,6 @@ class BasicCharacterController {
 
         this._LoadModels();
 
-        setTimeout(() => {
-            this._activateSpeedBoost();
-        }, 5000);
     }
 
     _LoadModels() {
@@ -210,6 +207,7 @@ class BasicCharacterController {
           for (let coin of this._world.coinsSpeed) {
               const coinBox = new THREE.Box3().setFromObject(coin);
               if (box.intersectsBox(coinBox)) {
+                    this._world.coinsSpeed.splice(this._world.coinsSpeed.indexOf(coin), 1);
                   this._ActivatePowerUp(coin);
                   return true; 
               }
@@ -217,6 +215,7 @@ class BasicCharacterController {
           for (let coin of this._world.coinsTime) {
             const coinBox = new THREE.Box3().setFromObject(coin);
             if (box.intersectsBox(coinBox)) {
+                this._world.coinsTime.splice(this._world.coinsTime.indexOf(coin), 1);
                 this._addExtraTime(coin);
                 return true; 
             }
@@ -231,14 +230,18 @@ class BasicCharacterController {
 
   _addExtraTime(coin) {
     this._params.scene.remove(coin);
-    window.remainingTime += 2.5;
-    }
+    window.remainingTime +=5;
+    window.singletons.timeSound.play().then(r => r).catch(e => console.log(e));
+    }
 
   _ActivatePowerUp(coin) {
     this._params.scene.remove(coin);
-    
+
+
    //activate speed boost
+
    this._activateSpeedBoost();
+    window.singletons.speedSound.play().then(r => r).catch(e => console.log(e))
     
  
 }

@@ -24,13 +24,13 @@ window.gameState = {
 window.real = false;
 // sound effects
 window.singletons={
-
     audio: audio,
     _footSteps: new Audio('./music/walkSound.mp3'),
     _run: new Audio('./music/runningSound.mp3'),
     _losingSound: new Audio('./music/losingSound.mp3'),
+    timeSound: new Audio('./music/time.wav'),
+    speedSound: new Audio('./music/speed.wav'),
 }
-
 
 
 window.initGame = function (num){
@@ -53,15 +53,15 @@ window.initGame = function (num){
    switch (num) {
 
          case 0:
-            window._APP._Initialize(Level0,250);
+            window._APP._Initialize(Level0,{x:9, y:5});
             window.gameState._currentLevel = 0;
             break;
             case 1:
-            window._APP._Initialize(Level1,350);
+            window._APP._Initialize(Level1,{x:6, y:3.5});
             window.gameState._currentLevel = 1;
             break;
             case 2:
-            window._APP._Initialize(Level2, 550);
+            window._APP._Initialize(Level2, {x:3.5, y:1.9});
             window.gameState._currentLevel = 2;
             break;
    }
@@ -80,13 +80,13 @@ window.restartGame = function (){
     submenu.style.display = 'none';
     switch (window.gameState._currentLevel) {
         case 0:
-            window._APP._Initialize(Level0,250);
+            window._APP._Initialize(Level0,{x:9, y:5});
             break;
             case 1:
-            window._APP._Initialize(Level1,350);
+            window._APP._Initialize(Level1,{x:6, y:3.5});
             break;
             case 2:
-            window._APP._Initialize(Level2, 550);
+            window._APP._Initialize(Level2, {x:3.5, y:1.9});
             break;
     }
 

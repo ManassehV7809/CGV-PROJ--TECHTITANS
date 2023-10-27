@@ -30,7 +30,7 @@ class Game {
       antialias: false,
     });
     this._threejs2.outputEncoding = THREE.sRGBEncoding;
-    this._threejs2.setPixelRatio(0.5);
+    this._threejs2.setPixelRatio(1);
     this._threejs2.setSize(window.innerWidth*0.2, window.innerWidth*0.2);
 
     //todo: setting up a camera
@@ -48,11 +48,27 @@ class Game {
       this._SetLevel(Level0);
     }
 
+
     
    // todo: setting up a  map cam
-   this.secondCamera = new THREE.PerspectiveCamera(75,1.0, 0.1, 1000);
-   this.secondCamera.position.set(0, height, 0);
-   this.secondCamera.lookAt(0,0,0);
+   // this.secondCamera = new THREE.PerspectiveCamera(75,1.0, 0.1, 1000);
+   // this.secondCamera.position.set(0, height, 0);
+   // this.secondCamera.lookAt(0,0,0);
+
+      let x = height.x;
+        let y = height.y;
+
+   this.secondCamera = new THREE.OrthographicCamera(
+  -window.innerWidth / x, // left
+  window.innerWidth / x,  // right
+  window.innerHeight / y, // top
+  -window.innerHeight / y, // bottom
+  1,                    // near clipping plane
+  1000                  // far clipping plane
+);
+// Set the camera's position
+this.secondCamera.position.set(0, 200, 0);
+this.secondCamera.lookAt(0,0,0);
 
 
     this._mixers = [];
