@@ -205,7 +205,6 @@ this.secondCamera.lookAt(0,0,0);
     this._thirdPersonCamera = null;
   }
 
-
 }
 
 export {Game}

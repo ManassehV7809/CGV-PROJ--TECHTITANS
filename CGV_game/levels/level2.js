@@ -12,36 +12,32 @@ const dim = 850 ;
   let lights = [];
 
  // Add a directional light to simulate sunlight
-const sunlight = new THREE.DirectionalLight(0xFFFFFF, 0.1);
-sunlight.intensity = 0.5;
-sunlight.position.set(100, 100, 100);
-sunlight.target.position.set(0, 0, 0);
-sunlight.castShadow = true;
-sunlight.shadow.mapSize.width = 500;
-sunlight.shadow.mapSize.height = 500;
-lights.push(sunlight);
+// const sunlight = new THREE.DirectionalLight(0XFFFFFF, 1);
+// sunlight.intensity = 0.5;
+// sunlight.position.set(100, 100, 1000);
+// sunlight.target.position.set(0, 0, 0);
+// sunlight.castShadow = true;
+// sunlight.shadow.mapSize.width = 500;
+// sunlight.shadow.mapSize.height = 500;
+// lights.push(sunlight);
 
 // Decrease the intensity of the ambient light
-const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.1);
+const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0);
 lights.push(ambientLight);
 
-  // Increase the intensity of the point light and make it a blue color
-  let moonlight = new THREE.PointLight(0x0000FF, 0.5);
-  moonlight.intensity = 1.5;
-  moonlight.position.set(-100, 100, 100);
-  moonlight.castShadow = true;
-  moonlight.shadow.bias = -0.001;
-  moonlight.shadow.mapSize.width = 500;
-  moonlight.shadow.mapSize.height = 500;
-  moonlight.shadow.camera.near = 0.1;
-  moonlight.shadow.camera.far = 500.0;
-  moonlight.shadow.camera.near = 0.5; // This line seems redundant due to the previous line
-  moonlight.shadow.camera.far = 1000.0;
-  moonlight.shadow.camera.left = 50;
-  moonlight.shadow.camera.right = -50;
-  moonlight.shadow.camera.top = 50;
-  moonlight.shadow.camera.bottom = -50;
-  lights.push(moonlight);
+   // Add soft directional light
+   const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
+   directionalLight.position.set(5, 10, 5);
+   directionalLight.target.position.set(0, 0, 0);
+   directionalLight.castShadow = true;
+   lights.push(directionalLight);
+
+   // Additional directional light from the opposite direction for balanced lighting
+const oppositeDirectionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
+oppositeDirectionalLight.position.set(-5, 10, -5);
+oppositeDirectionalLight.target.position.set(0, 0, 0);
+lights.push(oppositeDirectionalLight);
+
     
 
     //todo: define background
@@ -61,7 +57,7 @@ lights.push(ambientLight);
     const plane = new THREE.Mesh(
         new THREE.PlaneGeometry(dim, dim, 10, 10),
         new THREE.MeshStandardMaterial({
-
+              color: 0x808080,
 
           }));
 
@@ -228,7 +224,7 @@ lights.push(ambientLight);
     
         lantern.position.set(x, 0, z);
         
-        const lanternLight = new THREE.PointLight(0xFFFF00, 1, 100);
+        const lanternLight = new THREE.PointLight(0x00FFFF, 1, 100);
         lanternLight.position.set(x, 5, z);  // Adjust the height (y value) as needed
         objects.push(lanternLight);
         objects.push(lantern);

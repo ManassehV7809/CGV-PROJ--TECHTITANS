@@ -50,7 +50,7 @@ lights.push(light1);
         './images/sky_box_volcano/front.jpg',
         './images/sky_box_volcano/back.jpg',
     ]);
-    bg.encoding = THREE.sRGBEncoding;;
+    bg.encoding = THREE.sRGBEncoding;
 
     const dim = 500;
 

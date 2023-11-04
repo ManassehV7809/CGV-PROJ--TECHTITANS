@@ -2,7 +2,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.mod
 
 function createLantern() {
     const metalMaterial = new THREE.MeshStandardMaterial({ color: 0x808080 }); // A gray color for metal
-    const lightMaterial = new THREE.MeshStandardMaterial({ color: 0xFFFF00, emissive: 0xFFFF00, emissiveIntensity: 2 });
+    const lightMaterial = new THREE.MeshStandardMaterial({ color: 0x00FFFF, emissive: 0x00FFFF, emissiveIntensity: 2 });
 
 
     
@@ -21,7 +21,7 @@ function createLantern() {
     lightBulb.position.y = 0.5;
 
     // Emitting light from the light bulb
-    const emittedLight = new THREE.PointLight(0xFFFF00, 5, 12);  // Yellow color, intensity of 2, and distance of 10 units
+    const emittedLight = new THREE.PointLight(0x00FFFF, 5, 12);  // tEAL color, intensity of 2, and distance of 10 units
     emittedLight.position.copy(lightBulb.position);
     emittedLight.castShadow = true;
 

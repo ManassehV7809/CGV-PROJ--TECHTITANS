@@ -1,6 +1,5 @@
 class Level {
     constructor( lights, effects, background, ground, objects,coinsSpeed,coinsTime, startPosition,time, ) {
-
         this.lights = lights;
         this.background = background;
         this.ground = ground;
@@ -15,9 +14,6 @@ class Level {
         else{
             this.time = 6000;
         }
-
-
-       
     }
 
 }

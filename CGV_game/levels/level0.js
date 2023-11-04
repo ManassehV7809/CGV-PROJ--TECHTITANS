@@ -33,17 +33,7 @@ let lights = [];
  
   moonlight.position.set(-100, 100, 100);
   moonlight.castShadow = false;
-  //moonlight.shadow.bias = -0.001;
-  // moonlight.shadow.mapSize.width = 500;
-  // moonlight.shadow.mapSize.height = 500;
-  // moonlight.shadow.camera.near = 0.1;
-  // moonlight.shadow.camera.far = 500.0;
-  // moonlight.shadow.camera.near = 0.5; // This line seems redundant due to the previous line
-  // moonlight.shadow.camera.far = 1000.0;
-  // moonlight.shadow.camera.left = 50;
-  // moonlight.shadow.camera.right = -50;
-  // moonlight.shadow.camera.top = 50;
-  // moonlight.shadow.camera.bottom = -50;
+
   lights.push(moonlight);
 
     // Ambient light with a colder hue for atmosphere
@@ -247,7 +237,7 @@ function placeRandomCoins(speedCoins, timeCoins) {
 
 function drawMaze() {
     // Load your crystal texture
-    const crystalTexture = new THREE.TextureLoader().load('../images/crystal2.avif'); 
+    const crystalTexture = new THREE.TextureLoader().load('../images/crystal.jpg');
 
     let mazeWalls = [];
 
